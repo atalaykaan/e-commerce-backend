@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class UserDetailsConfiguration implements UserDetailsService {
 
     //in this project, email was used instead of username.
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) {
 
         User user = userRepository.findByEmail(email)
