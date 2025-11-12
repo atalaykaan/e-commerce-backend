@@ -27,14 +27,6 @@ public class JwtService {
         return createKey(claims, email);
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
-
-        String email = extractEmail(token);
-        Date expirationDate = extractExpiration(token);
-
-        return (email.equals(userDetails.getUsername()) && !expirationDate.before(new Date()));
-    }
-
     private String createKey(Map<String, Object> claims, String email) {
 
         return Jwts.builder()
@@ -44,7 +36,6 @@ public class JwtService {
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
                 .signWith(getSignKey(), Jwts.SIG.HS256)
                 .compact();
-
     }
 
     private SecretKey getSignKey() {
@@ -73,8 +64,16 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public Date extractExpiration(String token) {
+    private Date extractExpiration(String token) {
 
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+
+        String email = extractEmail(token);
+        Date expirationDate = extractExpiration(token);
+
+        return (email.equals(userDetails.getUsername()) && !expirationDate.before(new Date()));
     }
 }
