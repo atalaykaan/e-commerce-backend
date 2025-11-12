@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
@@ -119,12 +119,12 @@ public class UserService {
 
         User foundUser = userRepository.findById(id)
                 .map(user -> {
-                    Optional.ofNullable(updateUserRequest.getFirstName()).ifPresent(user::setFirstName);
-                    Optional.ofNullable(updateUserRequest.getLastName()).ifPresent(user::setLastName);
-                    Optional.ofNullable(updateUserRequest.getEmail()).ifPresent(user::setEmail);
-                    Optional.ofNullable(updateUserRequest.getPassword()).ifPresent(user::setPassword);
-                    Optional.ofNullable(updateUserRequest.getPhone()).ifPresent(user::setPhone);
-                    Optional.ofNullable(updateUserRequest.getAuthorities()).ifPresent(user::setAuthorities);
+                    updateIfNotNull(updateUserRequest.getFirstName(), user::setFirstName);
+                    updateIfNotNull(updateUserRequest.getLastName(), user::setLastName);
+                    updateIfNotNull(updateUserRequest.getEmail(), user::setEmail);
+                    updateIfNotNull(updateUserRequest.getPassword(), password -> user.setPassword(passwordEncoder.encode(password)));
+                    updateIfNotNull(updateUserRequest.getPhone(), user::setPhone);
+                    updateIfNotNull(updateUserRequest.getAuthorities(), user::setAuthorities);
 
                     return user;
                 })
@@ -133,6 +133,14 @@ public class UserService {
         User savedUser = userRepository.save(foundUser);
 
         return userMapper.toDTO(savedUser);
+    }
+
+    private <T> void updateIfNotNull(T value, Consumer<T> setter) {
+
+        if(value != null) {
+
+            setter.accept(value);
+        }
     }
 
     public void deleteById(Long id) {
