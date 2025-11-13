@@ -55,6 +55,15 @@ public class GeneralExceptionAdvisor extends ResponseEntityExceptionHandler {
         );
     }
 
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException ex, WebRequest request) {
+
+        return new ResponseEntity<>(
+                List.of(ex.getMessage(), request.getDescription(false)),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
 

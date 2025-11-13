@@ -1,8 +1,8 @@
 package com.atalaykaan.e_commerce_backend.service;
 
-import com.atalaykaan.e_commerce_backend.dto.request.AuthRequest;
-import com.atalaykaan.e_commerce_backend.dto.request.CreateUserRequest;
-import com.atalaykaan.e_commerce_backend.dto.request.UpdateUserRequest;
+import com.atalaykaan.e_commerce_backend.dto.request.auth.AuthRequest;
+import com.atalaykaan.e_commerce_backend.dto.request.create.CreateUserRequest;
+import com.atalaykaan.e_commerce_backend.dto.request.update.UpdateUserRequest;
 import com.atalaykaan.e_commerce_backend.dto.response.UserDTO;
 import com.atalaykaan.e_commerce_backend.exception.UserNotFoundException;
 import com.atalaykaan.e_commerce_backend.exception.UserWithEmailAlreadyExistsException;
@@ -19,11 +19,12 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService extends BaseService {
 
     private final UserRepository userRepository;
 
@@ -98,7 +99,7 @@ public class UserService {
         return userDTOList;
     }
 
-    public UserDTO findById(Long id) {
+    public UserDTO findById(UUID id) {
 
         UserDTO userDTO = userRepository.findById(id)
                 .map(userMapper::toDTO)
@@ -115,16 +116,16 @@ public class UserService {
         return userMapper.toDTO(foundUser);
     }
 
-    public UserDTO updateById(Long id, UpdateUserRequest updateUserRequest) {
+    public UserDTO updateById(UUID id, UpdateUserRequest updateUserRequest) {
 
         User foundUser = userRepository.findById(id)
                 .map(user -> {
-                    updateIfNotNull(updateUserRequest.getFirstName(), user::setFirstName);
-                    updateIfNotNull(updateUserRequest.getLastName(), user::setLastName);
-                    updateIfNotNull(updateUserRequest.getEmail(), user::setEmail);
-                    updateIfNotNull(updateUserRequest.getPassword(), password -> user.setPassword(passwordEncoder.encode(password)));
-                    updateIfNotNull(updateUserRequest.getPhone(), user::setPhone);
-                    updateIfNotNull(updateUserRequest.getAuthorities(), user::setAuthorities);
+                    updateIfExists(updateUserRequest.getFirstName(), user::setFirstName);
+                    updateIfExists(updateUserRequest.getLastName(), user::setLastName);
+                    updateIfExists(updateUserRequest.getEmail(), user::setEmail);
+                    updateIfExists(updateUserRequest.getPassword(), password -> user.setPassword(passwordEncoder.encode(password)));
+                    updateIfExists(updateUserRequest.getPhone(), user::setPhone);
+                    updateIfExists(updateUserRequest.getAuthorities(), user::setAuthorities);
 
                     return user;
                 })
@@ -135,15 +136,7 @@ public class UserService {
         return userMapper.toDTO(savedUser);
     }
 
-    private <T> void updateIfNotNull(T value, Consumer<T> setter) {
-
-        if(value != null) {
-
-            setter.accept(value);
-        }
-    }
-
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
 
         userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));

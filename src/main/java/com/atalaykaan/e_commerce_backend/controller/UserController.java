@@ -1,8 +1,8 @@
 package com.atalaykaan.e_commerce_backend.controller;
 
-import com.atalaykaan.e_commerce_backend.dto.request.AuthRequest;
-import com.atalaykaan.e_commerce_backend.dto.request.CreateUserRequest;
-import com.atalaykaan.e_commerce_backend.dto.request.UpdateUserRequest;
+import com.atalaykaan.e_commerce_backend.dto.request.auth.AuthRequest;
+import com.atalaykaan.e_commerce_backend.dto.request.create.CreateUserRequest;
+import com.atalaykaan.e_commerce_backend.dto.request.update.UpdateUserRequest;
 import com.atalaykaan.e_commerce_backend.dto.response.UserDTO;
 import com.atalaykaan.e_commerce_backend.service.UserService;
 import jakarta.validation.Valid;
@@ -15,9 +15,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -27,15 +28,15 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
 
-        UserDTO createdUserDTO = userService.save(createUserRequest);
+        UserDTO savedUserDTO = userService.save(createUserRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(createdUserDTO.getId())
+                .buildAndExpand(savedUserDTO.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(createdUserDTO);
+        return ResponseEntity.created(location).body(savedUserDTO);
     }
 
     @PostMapping("/login")
@@ -47,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> findAll() {
+    public ResponseEntity<List<UserDTO>> findAllUsers() {
 
         List<UserDTO> userDTOList = userService.findAll();
 
@@ -55,7 +56,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> findUserById(@PathVariable UUID id) {
 
         UserDTO userDTO = userService.findById(id);
 
@@ -63,7 +64,7 @@ public class UserController {
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<UserDTO> findByEmail(@PathVariable String email) {
+    public ResponseEntity<UserDTO> findUserByEmail(@PathVariable String email) {
 
         UserDTO userDTO = userService.findByEmail(email);
 
@@ -71,7 +72,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateById(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
+    public ResponseEntity<UserDTO> updateUserById(@PathVariable UUID id, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
 
         UserDTO userDTO = userService.updateById(id, updateUserRequest);
 
@@ -79,7 +80,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUserById(@PathVariable UUID id) {
 
         userService.deleteById(id);
 
@@ -87,7 +88,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteAll() {
+    public ResponseEntity<Void> deleteAllUsers() {
 
         userService.deleteAll();
 

@@ -5,10 +5,11 @@ import com.atalaykaan.e_commerce_backend.model.enums.Role;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 public class UserDTO {
 
-    private Long id;
+    private UUID id;
 
     private String firstName;
 
@@ -28,7 +29,7 @@ public class UserDTO {
 
     }
 
-    public UserDTO(Long id, String firstName, String lastName, String email, String password, String phone, Set<Role> authorities, LocalDateTime createdAt) {
+    public UserDTO(UUID id, String firstName, String lastName, String email, String password, String phone, Set<Role> authorities, LocalDateTime createdAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -39,11 +40,11 @@ public class UserDTO {
         this.createdAt = createdAt;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

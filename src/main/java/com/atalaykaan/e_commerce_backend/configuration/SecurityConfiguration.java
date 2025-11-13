@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.config;
+package com.atalaykaan.e_commerce_backend.configuration;
 
 import com.atalaykaan.e_commerce_backend.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +39,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         request ->
                                 request
-                                        .requestMatchers("/auth/register/**", "/auth/login/**").permitAll()
-                                        .requestMatchers("/auth/**").hasRole("ADMIN")
+                                        .requestMatchers("/api/auth/register/**", "/api/auth/login/**").permitAll()
+                                        .requestMatchers("/api/**").hasRole("ADMIN")
                                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

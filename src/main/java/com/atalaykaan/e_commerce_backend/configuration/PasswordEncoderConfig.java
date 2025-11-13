@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.config;
+package com.atalaykaan.e_commerce_backend.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

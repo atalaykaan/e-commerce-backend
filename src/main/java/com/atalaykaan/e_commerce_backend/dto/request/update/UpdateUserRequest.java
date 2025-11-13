@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.dto.request;
+package com.atalaykaan.e_commerce_backend.dto.request.update;
 
 import com.atalaykaan.e_commerce_backend.model.enums.Role;
 import lombok.AllArgsConstructor;

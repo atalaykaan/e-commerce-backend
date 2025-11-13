@@ -1,6 +1,7 @@
-package com.atalaykaan.e_commerce_backend.dto.request;
+package com.atalaykaan.e_commerce_backend.dto.request.create;
 
 import com.atalaykaan.e_commerce_backend.model.enums.Role;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class CreateUserRequest {
     private String lastName;
 
     @NotBlank
+    @Email
     private String email;
 
     @NotBlank

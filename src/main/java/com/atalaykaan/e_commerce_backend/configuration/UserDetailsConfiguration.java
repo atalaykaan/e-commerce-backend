@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.config;
+package com.atalaykaan.e_commerce_backend.configuration;
 
 import com.atalaykaan.e_commerce_backend.exception.UserNotFoundException;
 import com.atalaykaan.e_commerce_backend.model.User;

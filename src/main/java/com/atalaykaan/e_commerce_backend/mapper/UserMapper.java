@@ -9,5 +9,5 @@ public interface UserMapper {
 
     UserDTO toDTO(User user);
 
-    User toEntity(UserDTO userDTO);
+    User toUser(UserDTO userDTO);
 }
