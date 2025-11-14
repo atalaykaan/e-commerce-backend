@@ -64,6 +64,51 @@ public class GeneralExceptionAdvisor extends ResponseEntityExceptionHandler {
         );
     }
 
+    @ExceptionHandler(CartNotFoundException.class)
+    public ResponseEntity<Object> handleCartNotFoundException(CartNotFoundException ex, WebRequest request) {
+
+        return new ResponseEntity<>(
+                List.of(ex.getMessage(), request.getDescription(false)),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(ItemAlreadyInCartException.class)
+    public ResponseEntity<Object> handleItemAlreadyInCartException(ItemAlreadyInCartException ex, WebRequest request) {
+
+        return new ResponseEntity<>(
+                List.of(ex.getMessage(), request.getDescription(false)),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(CartItemNotFoundException.class)
+    public ResponseEntity<Object> handleCartItemNotFoundException(CartItemNotFoundException ex, WebRequest request) {
+
+        return new ResponseEntity<>(
+                List.of(ex.getMessage(), request.getDescription(false)),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(InvalidItemQuantityException.class)
+    public ResponseEntity<Object> handleInvalidItemQuantityException(InvalidItemQuantityException ex, WebRequest request) {
+
+        return new ResponseEntity<>(
+                List.of(ex.getMessage(), request.getDescription(false)),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(InvalidProductPriceException.class)
+    public ResponseEntity<Object> handleInvalidProductPriceException(InvalidProductPriceException ex, WebRequest request) {
+
+        return new ResponseEntity<>(
+                List.of(ex.getMessage(), request.getDescription(false)),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
 

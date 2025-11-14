@@ -1,13 +1,13 @@
 package com.atalaykaan.e_commerce_backend.service;
 
-import com.atalaykaan.e_commerce_backend.dto.request.auth.AuthRequest;
-import com.atalaykaan.e_commerce_backend.dto.request.create.CreateUserRequest;
-import com.atalaykaan.e_commerce_backend.dto.request.update.UpdateUserRequest;
-import com.atalaykaan.e_commerce_backend.dto.response.UserDTO;
+import com.atalaykaan.e_commerce_backend.model.dto.request.auth.AuthRequest;
+import com.atalaykaan.e_commerce_backend.model.dto.request.create.CreateUserRequest;
+import com.atalaykaan.e_commerce_backend.model.dto.request.update.UpdateUserRequest;
+import com.atalaykaan.e_commerce_backend.model.dto.response.UserDTO;
 import com.atalaykaan.e_commerce_backend.exception.UserNotFoundException;
 import com.atalaykaan.e_commerce_backend.exception.UserWithEmailAlreadyExistsException;
 import com.atalaykaan.e_commerce_backend.mapper.UserMapper;
-import com.atalaykaan.e_commerce_backend.model.User;
+import com.atalaykaan.e_commerce_backend.model.entity.User;
 import com.atalaykaan.e_commerce_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor

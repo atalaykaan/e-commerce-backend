@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.dto.response;
+package com.atalaykaan.e_commerce_backend.model.dto.response;
 
 import com.atalaykaan.e_commerce_backend.model.enums.Role;
 

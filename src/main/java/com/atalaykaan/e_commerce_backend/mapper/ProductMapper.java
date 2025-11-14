@@ -1,7 +1,7 @@
 package com.atalaykaan.e_commerce_backend.mapper;
 
-import com.atalaykaan.e_commerce_backend.dto.response.ProductDTO;
-import com.atalaykaan.e_commerce_backend.model.Product;
+import com.atalaykaan.e_commerce_backend.model.dto.response.ProductDTO;
+import com.atalaykaan.e_commerce_backend.model.entity.Product;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

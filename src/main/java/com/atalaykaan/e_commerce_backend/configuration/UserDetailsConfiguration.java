@@ -1,8 +1,8 @@
 package com.atalaykaan.e_commerce_backend.configuration;
 
 import com.atalaykaan.e_commerce_backend.exception.UserNotFoundException;
-import com.atalaykaan.e_commerce_backend.model.User;
-import com.atalaykaan.e_commerce_backend.model.UserPrincipal;
+import com.atalaykaan.e_commerce_backend.model.entity.User;
+import com.atalaykaan.e_commerce_backend.model.principal.UserPrincipal;
 import com.atalaykaan.e_commerce_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

@@ -1,11 +1,12 @@
 package com.atalaykaan.e_commerce_backend.service;
 
-import com.atalaykaan.e_commerce_backend.dto.request.create.CreateProductRequest;
-import com.atalaykaan.e_commerce_backend.dto.request.update.UpdateProductRequest;
-import com.atalaykaan.e_commerce_backend.dto.response.ProductDTO;
+import com.atalaykaan.e_commerce_backend.exception.InvalidProductPriceException;
+import com.atalaykaan.e_commerce_backend.model.dto.request.create.CreateProductRequest;
+import com.atalaykaan.e_commerce_backend.model.dto.request.update.UpdateProductRequest;
+import com.atalaykaan.e_commerce_backend.model.dto.response.ProductDTO;
 import com.atalaykaan.e_commerce_backend.exception.ProductNotFoundException;
 import com.atalaykaan.e_commerce_backend.mapper.ProductMapper;
-import com.atalaykaan.e_commerce_backend.model.Product;
+import com.atalaykaan.e_commerce_backend.model.entity.Product;
 import com.atalaykaan.e_commerce_backend.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -15,6 +16,7 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +36,8 @@ public class ProductService extends BaseService {
     )
     public ProductDTO save(CreateProductRequest createProductRequest) {
 
+        validateProductPrice(createProductRequest.getPrice());
+
         LocalDateTime now = LocalDateTime.now();
 
         Product createdProduct = productRepository.save(
@@ -50,7 +54,6 @@ public class ProductService extends BaseService {
 
         return productMapper.toDTO(createdProduct);
     }
-
 
     @Cacheable(value = "products")
     public List<ProductDTO> findAll() {
@@ -84,6 +87,8 @@ public class ProductService extends BaseService {
             evict = @CacheEvict(value = "products", allEntries = true)
     )
     public ProductDTO updateById(UUID id, UpdateProductRequest updateProductRequest) {
+
+        validateProductPrice(updateProductRequest.getPrice());
 
         Product foundProduct = productRepository.findById(id)
                 .map(product -> {
@@ -132,5 +137,13 @@ public class ProductService extends BaseService {
         }
 
         productRepository.deleteAll();
+    }
+
+    private void validateProductPrice(BigDecimal price) {
+
+        if(price.compareTo(BigDecimal.ZERO) < 0) {
+
+            throw new InvalidProductPriceException("Product price cannot be lower than zero");
+        }
     }
 }

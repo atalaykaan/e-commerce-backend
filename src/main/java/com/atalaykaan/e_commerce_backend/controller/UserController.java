@@ -1,9 +1,9 @@
 package com.atalaykaan.e_commerce_backend.controller;
 
-import com.atalaykaan.e_commerce_backend.dto.request.auth.AuthRequest;
-import com.atalaykaan.e_commerce_backend.dto.request.create.CreateUserRequest;
-import com.atalaykaan.e_commerce_backend.dto.request.update.UpdateUserRequest;
-import com.atalaykaan.e_commerce_backend.dto.response.UserDTO;
+import com.atalaykaan.e_commerce_backend.model.dto.request.auth.AuthRequest;
+import com.atalaykaan.e_commerce_backend.model.dto.request.create.CreateUserRequest;
+import com.atalaykaan.e_commerce_backend.model.dto.request.update.UpdateUserRequest;
+import com.atalaykaan.e_commerce_backend.model.dto.response.UserDTO;
 import com.atalaykaan.e_commerce_backend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

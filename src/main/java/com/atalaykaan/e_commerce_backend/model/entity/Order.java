@@ -1,5 +1,6 @@
-package com.atalaykaan.e_commerce_backend.model;
+package com.atalaykaan.e_commerce_backend.model.entity;
 
+import com.atalaykaan.e_commerce_backend.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,22 +18,19 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "products")
-public class Product {
+@Table(name = "orders")
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String name;
+    private UUID userId;
 
-    private String description;
+    private BigDecimal totalPrice;
 
-    private String brand;
-
-    private BigDecimal price;
-
-    private Long stock;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
     @CreationTimestamp
     @Column(updatable = false, columnDefinition = "TIMESTAMP")
