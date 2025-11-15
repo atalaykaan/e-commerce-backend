@@ -14,6 +14,8 @@ import java.util.UUID;
 @Builder
 public class CartItemDTO {
 
+    private UUID id;
+
     private UUID productId;
 
     private Integer quantity;

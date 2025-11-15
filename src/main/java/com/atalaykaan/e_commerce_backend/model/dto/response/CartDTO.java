@@ -16,6 +16,8 @@ import java.util.UUID;
 @Builder
 public class CartDTO {
 
+    private UUID id;
+
     private UUID userId;
 
     private List<CartItemDTO> cartItems;

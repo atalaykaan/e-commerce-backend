@@ -35,25 +35,35 @@ public class CartItemService {
 
     public CartItemDTO findById(UUID id) {
 
-        CartItemDTO cartItemDTO = cartItemRepository.findById(id)
-                .map(cartItemMapper::toDto)
-                .orElseThrow(() -> new CartItemNotFoundException("Cart item not found with id: " + id));
+        CartItem cartItem = getById(id);
+
+        CartItemDTO cartItemDTO = cartItemMapper.toDto(cartItem);
 
         return cartItemDTO;
     }
 
-    protected CartItem updateCartItemQuantity(UUID id, Integer quantity) {
+    protected CartItem getById(UUID id) {
 
         CartItem cartItem = cartItemRepository.findById(id)
                 .orElseThrow(() -> new CartItemNotFoundException("Cart item not found with id: " + id));
 
+        return cartItem;
+    }
+
+    protected void updateCartItemQuantity(CartItem cartItem, int quantity) {
+
         if(quantity < 0) {
 
-            throw new InvalidItemQuantityException("Decrease amount cannot exceed the cart item amount");
+            throw new InvalidItemQuantityException("Item quantity cannot be less than zero");
         }
 
         cartItem.setQuantity(quantity);
+    }
 
-        return cartItem;
+    protected void deleteCartItem(UUID id) {
+
+        getById(id);
+
+        cartItemRepository.deleteById(id);
     }
 }

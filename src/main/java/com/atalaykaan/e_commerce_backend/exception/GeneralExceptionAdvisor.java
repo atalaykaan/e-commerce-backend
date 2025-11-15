@@ -109,6 +109,15 @@ public class GeneralExceptionAdvisor extends ResponseEntityExceptionHandler {
         );
     }
 
+    @ExceptionHandler(FailedUserValidationException.class)
+    public ResponseEntity<Object> handleFailedUserValidationException(FailedUserValidationException ex, WebRequest request) {
+
+        return new ResponseEntity<>(
+                List.of(ex.getMessage(), request.getDescription(false)),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
 
