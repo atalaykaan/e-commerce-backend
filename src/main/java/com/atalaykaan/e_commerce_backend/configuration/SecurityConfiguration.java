@@ -1,9 +1,11 @@
 package com.atalaykaan.e_commerce_backend.configuration;
 
+import com.atalaykaan.e_commerce_backend.model.enums.Role;
 import com.atalaykaan.e_commerce_backend.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,6 +19,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static com.atalaykaan.e_commerce_backend.constants.ApiConstants.*;
 
 @Configuration
 @EnableWebSecurity
@@ -39,8 +43,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         request ->
                                 request
-                                        .requestMatchers("/api/auth/register/**", "/api/auth/login/**").permitAll()
-                                        .requestMatchers("/api/**").hasRole("ADMIN")
+                                        .requestMatchers(API_PREFIX + API_VERSION + API_USERS + "/register", API_PREFIX + API_VERSION + API_USERS + "/login").permitAll()
+                                        .requestMatchers(HttpMethod.GET, API_PREFIX + API_VERSION + API_PRODUCTS).hasRole("USER")
+                                        .requestMatchers(HttpMethod.GET, API_PREFIX + API_VERSION + API_PRODUCTS + "/*").hasRole("USER")
+                                        .requestMatchers(API_PREFIX + API_VERSION + API_CARTS).hasRole("USER")
+                                        .requestMatchers(API_PREFIX + "/**").hasRole("ADMIN")
                                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

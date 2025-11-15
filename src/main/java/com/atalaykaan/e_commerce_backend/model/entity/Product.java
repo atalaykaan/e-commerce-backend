@@ -26,11 +26,11 @@ public class Product {
 
     private String name;
 
+    private BigDecimal price;
+
     private String description;
 
     private String brand;
-
-    private BigDecimal price;
 
     private Long stock;
 

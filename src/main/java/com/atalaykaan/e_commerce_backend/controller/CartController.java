@@ -15,8 +15,11 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+import static com.atalaykaan.e_commerce_backend.constants.ApiConstants.*;
+
+
 @RestController
-@RequestMapping("/api/v1/carts")
+@RequestMapping(API_PREFIX + API_VERSION + API_CARTS)
 @RequiredArgsConstructor
 public class CartController {
 
@@ -29,7 +32,7 @@ public class CartController {
 
         String email = authentication.getName();
 
-        CartDTO cartDTO = cartService.addItemToCart(addItemToCartRequest, email);
+        CartDTO cartDTO = cartService.addItemToCart(email, addItemToCartRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -58,7 +61,7 @@ public class CartController {
         return ResponseEntity.ok(cartDTOList);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("userId/{userId}")
     public ResponseEntity<CartDTO> findByUserId(@PathVariable UUID userId) {
 
         CartDTO cartDTO = cartService.findCartByUserId(userId);
@@ -75,7 +78,7 @@ public class CartController {
     }
 
     @PutMapping
-    public ResponseEntity<CartDTO> updateItemInCart(
+    public ResponseEntity<CartDTO> updateItemQuantityInCart(
             Authentication authentication,
             @Valid @RequestBody UpdateCartItemRequest updateCartItemRequest) {
 
@@ -92,13 +95,23 @@ public class CartController {
 
         String email = authentication.getName();
 
-        cartService.deleteAllItemsFromCart();
+        cartService.deleteAllItemsFromCartByEmail(email);
+
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCartById(@PathVariable UUID id) {
 
-        cartService.deleteAllItemsFromCart(id);
+        cartService.deleteAllItemsFromCartById(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<Void> deleteAllCarts() {
+
+        cartService.deleteAllCarts();
 
         return ResponseEntity.noContent().build();
     }

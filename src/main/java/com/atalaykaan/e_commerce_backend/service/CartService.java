@@ -1,13 +1,11 @@
 package com.atalaykaan.e_commerce_backend.service;
 
-import com.atalaykaan.e_commerce_backend.exception.CartItemNotFoundException;
-import com.atalaykaan.e_commerce_backend.exception.FailedUserValidationException;
-import com.atalaykaan.e_commerce_backend.exception.ItemAlreadyInCartException;
+import com.atalaykaan.e_commerce_backend.exception.*;
 import com.atalaykaan.e_commerce_backend.model.dto.request.create.AddItemToCartRequest;
 import com.atalaykaan.e_commerce_backend.model.dto.request.update.UpdateCartItemRequest;
 import com.atalaykaan.e_commerce_backend.model.dto.response.CartDTO;
-import com.atalaykaan.e_commerce_backend.exception.CartNotFoundException;
 import com.atalaykaan.e_commerce_backend.mapper.CartMapper;
+import com.atalaykaan.e_commerce_backend.model.dto.response.ProductDTO;
 import com.atalaykaan.e_commerce_backend.model.dto.response.UserDTO;
 import com.atalaykaan.e_commerce_backend.model.entity.Cart;
 import com.atalaykaan.e_commerce_backend.model.entity.CartItem;
@@ -32,6 +30,8 @@ public class CartService {
     private final CartItemService cartItemService;
 
     private final UserService userService;
+
+    private final ProductService productService;
 
     private Cart createCart(UUID userId) {
 
@@ -91,6 +91,13 @@ public class CartService {
     }
 
     private void appendItemToCart(CartItem cartItem, Cart cart) {
+
+        ProductDTO productDTO = productService.findById(cartItem.getProductId());
+
+        if(productDTO.getStock() < cartItem.getQuantity()) {
+
+            throw new InvalidItemQuantityException("Item quantity cannot exceed the product stock");
+        }
 
         List<CartItem> cartItemList = cart.getCartItems();
 

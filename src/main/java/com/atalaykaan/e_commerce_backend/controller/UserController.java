@@ -17,8 +17,10 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+import static com.atalaykaan.e_commerce_backend.constants.ApiConstants.*;
+
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(API_PREFIX + API_VERSION + API_USERS)
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -63,7 +65,7 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<UserDTO> findUserByEmail(@PathVariable String email) {
 
         UserDTO userDTO = userService.findByEmail(email);

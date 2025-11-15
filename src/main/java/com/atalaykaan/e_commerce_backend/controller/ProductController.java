@@ -14,8 +14,10 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+import static com.atalaykaan.e_commerce_backend.constants.ApiConstants.*;
+
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping(API_PREFIX + API_VERSION + API_PRODUCTS)
 @RequiredArgsConstructor
 public class ProductController {
 
