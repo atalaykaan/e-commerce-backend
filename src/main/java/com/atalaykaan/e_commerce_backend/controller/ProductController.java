@@ -37,20 +37,20 @@ public class ProductController {
         return ResponseEntity.created(location).body(savedProductDTO);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ProductDTO>> findAllProducts() {
-
-        List<ProductDTO> productDTOList = productService.findAll();
-
-        return ResponseEntity.ok(productDTOList);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> findProductById(@PathVariable UUID id) {
 
         ProductDTO productDTO = productService.findById(id);
 
         return ResponseEntity.ok(productDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductDTO>> findAllProducts() {
+
+        List<ProductDTO> productDTOList = productService.findAll();
+
+        return ResponseEntity.ok(productDTOList);
     }
 
     @PutMapping("/{id}")

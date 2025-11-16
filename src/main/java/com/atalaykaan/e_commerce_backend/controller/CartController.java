@@ -53,12 +53,12 @@ public class CartController {
         return ResponseEntity.ok(cartDTO);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<CartDTO>> findAllCarts() {
+    @GetMapping("/{id}")
+    public ResponseEntity<CartDTO> findCartById(@PathVariable UUID id) {
 
-        List<CartDTO> cartDTOList = cartService.findAllCarts();
+        CartDTO cartDTO = cartService.findCartById(id);
 
-        return ResponseEntity.ok(cartDTOList);
+        return ResponseEntity.ok(cartDTO);
     }
 
     @GetMapping("userId/{userId}")
@@ -69,12 +69,12 @@ public class CartController {
         return ResponseEntity.ok(cartDTO);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CartDTO> findCartById(@PathVariable UUID id) {
+    @GetMapping("/all")
+    public ResponseEntity<List<CartDTO>> findAllCarts() {
 
-        CartDTO cartDTO = cartService.findCartById(id);
+        List<CartDTO> cartDTOList = cartService.findAllCarts();
 
-        return ResponseEntity.ok(cartDTO);
+        return ResponseEntity.ok(cartDTOList);
     }
 
     @PutMapping

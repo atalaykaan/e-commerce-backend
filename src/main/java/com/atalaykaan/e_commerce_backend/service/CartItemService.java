@@ -9,8 +9,10 @@ import com.atalaykaan.e_commerce_backend.model.entity.CartItem;
 import com.atalaykaan.e_commerce_backend.repository.CartItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -42,6 +44,21 @@ public class CartItemService {
         return cartItemDTO;
     }
 
+    public List<CartItemDTO> findAllCarts() {
+
+        List<CartItemDTO> cartItemDTOList = cartItemRepository.findAll()
+                .stream()
+                .map(cartItemMapper::toDto)
+                .toList();
+
+        if(cartItemDTOList.isEmpty()) {
+
+            throw new CartItemNotFoundException("No cart items were found");
+        }
+
+        return cartItemDTOList;
+    }
+
     protected CartItem getById(UUID id) {
 
         CartItem cartItem = cartItemRepository.findById(id)
@@ -60,6 +77,7 @@ public class CartItemService {
         cartItem.setQuantity(quantity);
     }
 
+    @Transactional
     protected void deleteCartItem(UUID id) {
 
         getById(id);

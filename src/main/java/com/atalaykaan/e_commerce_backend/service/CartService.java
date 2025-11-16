@@ -12,6 +12,7 @@ import com.atalaykaan.e_commerce_backend.model.entity.CartItem;
 import com.atalaykaan.e_commerce_backend.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -33,6 +34,7 @@ public class CartService {
 
     private final ProductService productService;
 
+    @Transactional
     private Cart createCart(UUID userId) {
 
         LocalDateTime dateNow = LocalDateTime.now();
@@ -48,11 +50,29 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
+    public CartDTO findCartById(UUID id) {
+
+        CartDTO cartDTO = cartRepository.findById(id)
+                .map(cartMapper::toDto)
+                .orElseThrow(() -> new CartNotFoundException("Cart not found with id: " + id));
+
+        return cartDTO;
+    }
+
     public CartDTO findCartByUserEmail(String email) {
 
         UserDTO userDTO = userService.findByEmail(email);
 
         CartDTO cartDTO = findCartByUserId(userDTO.getId());
+
+        return cartDTO;
+    }
+
+    public CartDTO findCartByUserId(UUID userId) {
+
+        CartDTO cartDTO = cartRepository.findByUserId(userId)
+                .map(cartMapper::toDto)
+                .orElseThrow(() -> new CartNotFoundException("User with id " + userId + " does not have any active carts"));
 
         return cartDTO;
     }
@@ -70,24 +90,6 @@ public class CartService {
         }
 
         return cartDTOList;
-    }
-
-    public CartDTO findCartByUserId(UUID userId) {
-
-        CartDTO cartDTO = cartRepository.findByUserId(userId)
-                .map(cartMapper::toDto)
-                .orElseThrow(() -> new CartNotFoundException("User with id " + userId + " does not have any active carts"));
-
-        return cartDTO;
-    }
-
-    public CartDTO findCartById(UUID id) {
-
-        CartDTO cartDTO = cartRepository.findById(id)
-                .map(cartMapper::toDto)
-                .orElseThrow(() -> new CartNotFoundException("Cart not found with id: " + id));
-
-        return cartDTO;
     }
 
     private void appendItemToCart(CartItem cartItem, Cart cart) {
@@ -114,6 +116,7 @@ public class CartService {
         cartItemList.add(cartItem);
     }
 
+    @Transactional
     public CartDTO addItemToCart(String email, AddItemToCartRequest addItemToCartRequest) {
 
         UserDTO userDTO = userService.findByEmail(email);
@@ -132,7 +135,9 @@ public class CartService {
 
         Cart savedCart = cartRepository.save(cart);
 
-        return cartMapper.toDto(savedCart);
+        CartDTO cartDTO = cartMapper.toDto(savedCart);
+
+        return cartDTO;
     }
 
     private CartItem validateUser(String email, UUID cartItemId) {
@@ -151,6 +156,7 @@ public class CartService {
         return cartItem;
     }
 
+    @Transactional
     public CartDTO updateCartItemQuantity(String email, UpdateCartItemRequest updateCartItemRequest) {
 
         CartItem cartItem = validateUser(email, updateCartItemRequest.getId());
@@ -173,7 +179,9 @@ public class CartService {
 
         Cart savedCart = cartRepository.save(cart);
 
-        return cartMapper.toDto(savedCart);
+        CartDTO cartDTO = cartMapper.toDto(savedCart);
+
+        return cartDTO;
     }
 
     private void checkIfCartIsEmpty(Cart cart) {
@@ -184,6 +192,7 @@ public class CartService {
         }
     }
 
+    @Transactional
     public void deleteAllItemsFromCartByEmail(String email) {
 
         UserDTO userDTO = userService.findByEmail(email);
@@ -202,6 +211,7 @@ public class CartService {
         cartRepository.save(cart);
     }
 
+    @Transactional
     public void deleteAllItemsFromCartById(UUID id) {
 
         Cart cart = cartRepository.findById(id)

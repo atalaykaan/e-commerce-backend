@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +36,7 @@ public class UserService extends BaseService {
 
     private final JwtService jwtService;
 
+    @Transactional
     public UserDTO save(CreateUserRequest createUserRequest) {
 
         if(userRepository.findByEmail(createUserRequest.getEmail()).isPresent()) {
@@ -54,7 +56,9 @@ public class UserService extends BaseService {
                         .build()
         );
 
-        return userMapper.toDTO(createdUser);
+        UserDTO userDTO = userMapper.toDTO(createdUser);
+
+        return userDTO;
     }
 
     public String authenticateAndGenerateToken(AuthRequest authRequest) {
@@ -83,6 +87,25 @@ public class UserService extends BaseService {
         }
     }
 
+    public UserDTO findByEmail(String email) {
+
+        User foundUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+
+        UserDTO userDTO = userMapper.toDTO(foundUser);
+
+        return userDTO;
+    }
+
+    public UserDTO findById(UUID id) {
+
+        UserDTO userDTO = userRepository.findById(id)
+                .map(userMapper::toDTO)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+
+        return userDTO;
+    }
+
     public List<UserDTO> findAll() {
 
         List<UserDTO> userDTOList = userRepository.findAll()
@@ -98,23 +121,7 @@ public class UserService extends BaseService {
         return userDTOList;
     }
 
-    public UserDTO findById(UUID id) {
-
-        UserDTO userDTO = userRepository.findById(id)
-                .map(userMapper::toDTO)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
-
-        return userDTO;
-    }
-
-    public UserDTO findByEmail(String email) {
-
-        User foundUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
-
-        return userMapper.toDTO(foundUser);
-    }
-
+    @Transactional
     public UserDTO updateById(UUID id, UpdateUserRequest updateUserRequest) {
 
         User foundUser = userRepository.findById(id)
@@ -132,9 +139,12 @@ public class UserService extends BaseService {
 
         User savedUser = userRepository.save(foundUser);
 
-        return userMapper.toDTO(savedUser);
+        UserDTO userDTO = userMapper.toDTO(savedUser);
+
+        return userDTO;
     }
 
+    @Transactional
     public void deleteById(UUID id) {
 
         userRepository.findById(id)
@@ -143,6 +153,7 @@ public class UserService extends BaseService {
         userRepository.deleteById(id);
     }
 
+    @Transactional
     public void deleteAll() {
 
         if(userRepository.findAll().isEmpty()) {

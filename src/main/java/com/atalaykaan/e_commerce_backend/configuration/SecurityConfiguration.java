@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                         request ->
                                 request
                                         .requestMatchers(API_PREFIX + API_VERSION + API_USERS + "/register", API_PREFIX + API_VERSION + API_USERS + "/login").permitAll()
+                                        .requestMatchers(HttpMethod.GET, API_PREFIX + API_VERSION + API_USERS).hasRole("USER")
                                         .requestMatchers(HttpMethod.GET, API_PREFIX + API_VERSION + API_PRODUCTS).hasRole("USER")
                                         .requestMatchers(HttpMethod.GET, API_PREFIX + API_VERSION + API_PRODUCTS + "/*").hasRole("USER")
                                         .requestMatchers(API_PREFIX + API_VERSION + API_CARTS).hasRole("USER")

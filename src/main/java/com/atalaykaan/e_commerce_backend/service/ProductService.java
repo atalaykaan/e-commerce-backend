@@ -31,8 +31,8 @@ public class ProductService extends BaseService {
 
     @Transactional
     @Caching(
-            put = @CachePut(value = "product", key = "#result.getId()"),
-            evict = @CacheEvict(value = "products", allEntries = true)
+            put = @CachePut(value = "products", key = "#result.getId()"),
+            evict = @CacheEvict(value = "products", key = "'allProducts'")
     )
     public ProductDTO save(CreateProductRequest createProductRequest) {
 
@@ -52,10 +52,26 @@ public class ProductService extends BaseService {
                         .build()
         );
 
-        return productMapper.toDTO(createdProduct);
+        ProductDTO productDTO = productMapper.toDTO(createdProduct);
+
+        System.out.println("no cache");
+
+        return productDTO;
     }
 
-    @Cacheable(value = "products")
+    @Cacheable(value = "products", key = "#id")
+    public ProductDTO findById(UUID id) {
+
+        ProductDTO productDTO = productRepository.findById(id)
+                .map(productMapper::toDTO)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+
+        System.out.println("no cache");
+
+        return productDTO;
+    }
+
+    @Cacheable(value = "products", key = "'allProducts'")
     public List<ProductDTO> findAll() {
 
         List<ProductDTO> productDTOList = productRepository.findAll()
@@ -68,23 +84,15 @@ public class ProductService extends BaseService {
             throw new ProductNotFoundException("No products were found");
         }
 
+        System.out.println("no cache");
+
         return productDTOList;
-    }
-
-    @Cacheable(value = "product", key = "#id")
-    public ProductDTO findById(UUID id) {
-
-        ProductDTO productDTO = productRepository.findById(id)
-                .map(productMapper::toDTO)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
-
-        return productDTO;
     }
 
     @Transactional
     @Caching(
-            put = @CachePut(value = "product", key = "#id"),
-            evict = @CacheEvict(value = "products", allEntries = true)
+            put = @CachePut(value = "products", key = "#id"),
+            evict = @CacheEvict(value = "products", key = "'allProducts'")
     )
     public ProductDTO updateById(UUID id, UpdateProductRequest updateProductRequest) {
 
@@ -105,14 +113,18 @@ public class ProductService extends BaseService {
 
         Product savedProduct = productRepository.save(foundProduct);
 
-        return productMapper.toDTO(savedProduct);
+        ProductDTO productDTO = productMapper.toDTO(savedProduct);
+
+        System.out.println("no cache");
+
+        return productDTO;
     }
 
     @Transactional
     @Caching(
             evict = {
-                    @CacheEvict(value = "product", key = "#id"),
-                    @CacheEvict(value = "products", allEntries = true)
+                    @CacheEvict(value = "products", key = "#id"),
+                    @CacheEvict(value = "products", key = "'allProducts'")
             }
     )
     public void deleteById(UUID id) {
@@ -126,7 +138,7 @@ public class ProductService extends BaseService {
     @Transactional
     @Caching(
             evict = {
-                    @CacheEvict(value = {"product", "products"}, allEntries = true)
+                    @CacheEvict(value = "products", allEntries = true)
             }
     )
     public void deleteAll() {
@@ -135,6 +147,8 @@ public class ProductService extends BaseService {
 
             throw new ProductNotFoundException("No products were found");
         }
+
+        System.out.println("no cache");
 
         productRepository.deleteAll();
     }

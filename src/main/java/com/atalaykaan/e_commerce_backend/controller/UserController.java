@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -50,14 +51,16 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> findAllUsers() {
+    public ResponseEntity<UserDTO> findCurrentUser(Authentication authentication) {
 
-        List<UserDTO> userDTOList = userService.findAll();
+        String email = authentication.getName();
 
-        return ResponseEntity.ok(userDTOList);
+        UserDTO userDTO = userService.findByEmail(email);
+
+        return ResponseEntity.ok(userDTO);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<UserDTO> findUserById(@PathVariable UUID id) {
 
         UserDTO userDTO = userService.findById(id);
@@ -71,6 +74,14 @@ public class UserController {
         UserDTO userDTO = userService.findByEmail(email);
 
         return ResponseEntity.ok(userDTO);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<UserDTO>> findAllUsers() {
+
+        List<UserDTO> userDTOList = userService.findAll();
+
+        return ResponseEntity.ok(userDTOList);
     }
 
     @PutMapping("/{id}")
