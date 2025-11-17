@@ -29,10 +29,14 @@ public class ProductService extends BaseService {
 
     private final ProductMapper productMapper;
 
+    private static final String PRODUCT_CACHE = "product";
+
+    private static final String PRODUCT_LIST_CACHE = "products";
+
     @Transactional
     @Caching(
-            put = @CachePut(value = "products", key = "#result.getId()"),
-            evict = @CacheEvict(value = "products", key = "'allProducts'")
+            put = @CachePut(value = PRODUCT_CACHE, key = "#result.getId()"),
+            evict = @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
     )
     public ProductDTO save(CreateProductRequest createProductRequest) {
 
@@ -59,7 +63,7 @@ public class ProductService extends BaseService {
         return productDTO;
     }
 
-    @Cacheable(value = "products", key = "#id")
+    @Cacheable(value = PRODUCT_CACHE, key = "#id")
     public ProductDTO findById(UUID id) {
 
         ProductDTO productDTO = productRepository.findById(id)
@@ -71,7 +75,7 @@ public class ProductService extends BaseService {
         return productDTO;
     }
 
-    @Cacheable(value = "products", key = "'allProducts'")
+    @Cacheable(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
     public List<ProductDTO> findAll() {
 
         List<ProductDTO> productDTOList = productRepository.findAll()
@@ -91,12 +95,15 @@ public class ProductService extends BaseService {
 
     @Transactional
     @Caching(
-            put = @CachePut(value = "products", key = "#id"),
-            evict = @CacheEvict(value = "products", key = "'allProducts'")
+            put = @CachePut(value = PRODUCT_CACHE, key = "#id"),
+            evict = @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
     )
     public ProductDTO updateById(UUID id, UpdateProductRequest updateProductRequest) {
 
-        validateProductPrice(updateProductRequest.getPrice());
+        if(updateProductRequest.getPrice() != null) {
+
+            validateProductPrice(updateProductRequest.getPrice());
+        }
 
         Product foundProduct = productRepository.findById(id)
                 .map(product -> {
@@ -123,8 +130,8 @@ public class ProductService extends BaseService {
     @Transactional
     @Caching(
             evict = {
-                    @CacheEvict(value = "products", key = "#id"),
-                    @CacheEvict(value = "products", key = "'allProducts'")
+                    @CacheEvict(value = PRODUCT_CACHE, key = "#id"),
+                    @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
             }
     )
     public void deleteById(UUID id) {
@@ -138,7 +145,7 @@ public class ProductService extends BaseService {
     @Transactional
     @Caching(
             evict = {
-                    @CacheEvict(value = "products", allEntries = true)
+                    @CacheEvict(value = {PRODUCT_CACHE, PRODUCT_LIST_CACHE}, allEntries = true)
             }
     )
     public void deleteAll() {
