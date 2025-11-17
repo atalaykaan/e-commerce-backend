@@ -1,10 +1,7 @@
 package com.atalaykaan.e_commerce_backend.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -19,15 +16,18 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "carts")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @EqualsAndHashCode.Include
     private UUID id;
 
+    @Column(unique = true)
     private UUID userId;
 
-    @OneToMany(mappedBy = "cart", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
 
     private BigDecimal totalPrice;

@@ -8,5 +8,5 @@ public class ApiConstants {
     public static final String API_USERS = "/users";
     public static final String API_PRODUCTS = "/products";
     public static final String API_CARTS = "/carts";
-    public static final String API_CART_ITEMS = "/cartsItems";
+    public static final String API_CART_ITEMS = "/cartItems";
 }

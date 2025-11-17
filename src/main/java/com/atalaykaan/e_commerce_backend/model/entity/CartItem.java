@@ -1,10 +1,7 @@
 package com.atalaykaan.e_commerce_backend.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,10 +14,12 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "cart_items")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @EqualsAndHashCode.Include
     private UUID id;
 
     private UUID productId;

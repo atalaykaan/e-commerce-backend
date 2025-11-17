@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -18,9 +19,9 @@ public class CartItemDTO {
 
     private UUID productId;
 
-    private Integer quantity;
+    private BigDecimal price;
 
-    private CartDTO cart;
+    private Integer quantity;
 
     private LocalDateTime createdAt;
 

@@ -34,7 +34,6 @@ public class CartService {
 
     private final ProductService productService;
 
-    @Transactional
     private Cart createCart(UUID userId) {
 
         LocalDateTime dateNow = LocalDateTime.now();
@@ -47,7 +46,7 @@ public class CartService {
                 .updatedAt(dateNow)
                 .build();
 
-        return cartRepository.save(cart);
+        return cart;
     }
 
     public CartDTO findCartById(UUID id) {
@@ -124,6 +123,8 @@ public class CartService {
         Cart cart = cartRepository.findByUserId(userDTO.getId())
                 .orElse(createCart(userDTO.getId()));
 
+        System.out.println(cart.getId());
+
         CartItem cartItem = cartItemService.createCartItem(addItemToCartRequest);
 
         appendItemToCart(cartItem, cart);
@@ -134,6 +135,8 @@ public class CartService {
         cart.setUpdatedAt(dateNow);
 
         Cart savedCart = cartRepository.save(cart);
+
+        System.out.println(savedCart.getId());
 
         CartDTO cartDTO = cartMapper.toDto(savedCart);
 
@@ -148,7 +151,9 @@ public class CartService {
 
         Cart cart = cartItem.getCart();
 
-        if(userDTO.getId() != cart.getUserId()) {
+        boolean userIdAndCartUserIdEquals = userDTO.getId().equals(cart.getUserId());
+
+        if(!userIdAndCartUserIdEquals) {
 
             throw new FailedUserValidationException("Failed to validate user");
         }
@@ -165,17 +170,25 @@ public class CartService {
 
         cartItemService.updateCartItemQuantity(cartItem, updateCartItemRequest.getQuantity());
 
-        LocalDateTime dateNow = LocalDateTime.now();
-
         if(cartItem.getQuantity() == 0) {
 
             cart.getCartItems().remove(cartItem);
         }
-        else {
-            cartItem.setUpdatedAt(dateNow);
-        }
 
-        cart.setUpdatedAt(dateNow);
+        if(cart.getCartItems().isEmpty()) {
+
+            cartRepository.deleteById(cart.getId());
+
+            return null;
+        }
+        else {
+
+            LocalDateTime dateNow = LocalDateTime.now();
+
+            cartItem.setUpdatedAt(dateNow);
+
+            cart.setUpdatedAt(dateNow);
+        }
 
         Cart savedCart = cartRepository.save(cart);
 
