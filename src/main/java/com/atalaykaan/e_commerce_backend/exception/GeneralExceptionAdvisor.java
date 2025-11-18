@@ -51,7 +51,7 @@ public class GeneralExceptionAdvisor extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(
                 List.of(ex.getMessage(), request.getDescription(false)),
-                HttpStatus.NOT_FOUND
+                HttpStatus.BAD_REQUEST
         );
     }
 
@@ -78,7 +78,7 @@ public class GeneralExceptionAdvisor extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(
                 List.of(ex.getMessage(), request.getDescription(false)),
-                HttpStatus.NOT_FOUND
+                HttpStatus.BAD_REQUEST
         );
     }
 
@@ -96,7 +96,7 @@ public class GeneralExceptionAdvisor extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(
                 List.of(ex.getMessage(), request.getDescription(false)),
-                HttpStatus.NOT_FOUND
+                HttpStatus.BAD_REQUEST
         );
     }
 
@@ -105,12 +105,30 @@ public class GeneralExceptionAdvisor extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(
                 List.of(ex.getMessage(), request.getDescription(false)),
-                HttpStatus.NOT_FOUND
+                HttpStatus.BAD_REQUEST
         );
     }
 
     @ExceptionHandler(FailedUserValidationException.class)
     public ResponseEntity<Object> handleFailedUserValidationException(FailedUserValidationException ex, WebRequest request) {
+
+        return new ResponseEntity<>(
+                List.of(ex.getMessage(), request.getDescription(false)),
+                HttpStatus.FORBIDDEN
+        );
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<Object> handleOrderNotFoundException(OrderNotFoundException ex, WebRequest request) {
+
+        return new ResponseEntity<>(
+                List.of(ex.getMessage(), request.getDescription(false)),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(InvalidProductQuantityException.class)
+    public ResponseEntity<Object> handleInvalidProductQuantityException(InvalidProductQuantityException ex, WebRequest request) {
 
         return new ResponseEntity<>(
                 List.of(ex.getMessage(), request.getDescription(false)),

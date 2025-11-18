@@ -160,7 +160,7 @@ public class CartService {
     @Transactional
     public CartDTO updateCartItemQuantityInCart(String email, UpdateCartItemRequest updateCartItemRequest) {
 
-        CartItem cartItem = validateUser(email, updateCartItemRequest.getId());
+        CartItem cartItem = validateUser(email, updateCartItemRequest.getCartItemId());
 
         Cart cart = cartItem.getCart();
 

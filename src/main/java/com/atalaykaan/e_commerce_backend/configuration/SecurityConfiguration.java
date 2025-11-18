@@ -49,6 +49,8 @@ public class SecurityConfiguration {
                                         .requestMatchers(HttpMethod.GET, API_PREFIX + API_VERSION + API_PRODUCTS + "/*").hasRole("USER")
                                         .requestMatchers(API_PREFIX + API_VERSION + API_CARTS).hasRole("USER")
                                         .requestMatchers(HttpMethod.DELETE, API_PREFIX + API_VERSION + API_CARTS + "/cartItem/*").hasRole("USER")
+                                        .requestMatchers(HttpMethod.GET, API_PREFIX + API_VERSION + API_ORDERS).hasRole("USER")
+                                        .requestMatchers(HttpMethod.POST, API_PREFIX + API_VERSION + API_ORDERS).hasRole("USER")
                                         .requestMatchers(API_PREFIX + "/**").hasRole("ADMIN")
                                         .anyRequest().authenticated()
                 )

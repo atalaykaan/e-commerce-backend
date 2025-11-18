@@ -14,17 +14,16 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "cart_items")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode
 public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @EqualsAndHashCode.Include
     private UUID id;
 
     private UUID productId;
 
-    private Integer quantity;
+    private Long quantity;
 
     @ManyToOne
     @JoinColumn(name = "cart_id")

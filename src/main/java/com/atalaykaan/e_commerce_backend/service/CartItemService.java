@@ -67,7 +67,7 @@ public class CartItemService {
         return cartItem;
     }
 
-    protected void updateCartItemQuantity(CartItem cartItem, int quantity) {
+    protected void updateCartItemQuantity(CartItem cartItem, Long quantity) {
 
         if(quantity < 0) {
 

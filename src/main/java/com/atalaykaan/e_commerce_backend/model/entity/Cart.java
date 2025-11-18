@@ -16,12 +16,10 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "carts")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @EqualsAndHashCode.Include
     private UUID id;
 
     @Column(unique = true)

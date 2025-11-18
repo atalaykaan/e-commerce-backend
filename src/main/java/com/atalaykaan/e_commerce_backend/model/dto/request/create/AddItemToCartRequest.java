@@ -18,5 +18,5 @@ public class AddItemToCartRequest {
 
     @NotNull
     @Min(value = 1, message = "Quantity must be at least one")
-    private Integer quantity;
+    private Long quantity;
 }

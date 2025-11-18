@@ -1,6 +1,7 @@
 package com.atalaykaan.e_commerce_backend.service;
 
 import com.atalaykaan.e_commerce_backend.exception.InvalidProductPriceException;
+import com.atalaykaan.e_commerce_backend.exception.InvalidProductQuantityException;
 import com.atalaykaan.e_commerce_backend.model.dto.request.create.CreateProductRequest;
 import com.atalaykaan.e_commerce_backend.model.dto.request.update.UpdateProductRequest;
 import com.atalaykaan.e_commerce_backend.model.dto.response.ProductDTO;
@@ -113,6 +114,32 @@ public class ProductService extends BaseService {
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
 
         Product savedProduct = productRepository.save(foundProduct);
+
+        ProductDTO productDTO = productMapper.toDTO(savedProduct);
+
+        return productDTO;
+    }
+
+    @Transactional
+    @Caching(
+            put = @CachePut(value = PRODUCT_CACHE, key = "#id"),
+            evict = @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
+    )
+    protected ProductDTO decreaseProductStock(UUID id, Long quantity) {
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+
+        long newStock = product.getStock() - quantity;
+
+        if(newStock < 0) {
+
+            throw new InvalidProductQuantityException("Quantity cannot be less than stock");
+        }
+
+        product.setStock(newStock);
+
+        Product savedProduct = productRepository.save(product);
 
         ProductDTO productDTO = productMapper.toDTO(savedProduct);
 
