@@ -26,7 +26,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody CreateProductRequest createProductRequest) {
 
-        ProductDTO savedProductDTO = productService.save(createProductRequest);
+        ProductDTO savedProductDTO = productService.saveProduct(createProductRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -40,7 +40,7 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> findProductById(@PathVariable UUID id) {
 
-        ProductDTO productDTO = productService.findById(id);
+        ProductDTO productDTO = productService.findProductById(id);
 
         return ResponseEntity.ok(productDTO);
     }
@@ -48,7 +48,7 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductDTO>> findAllProducts() {
 
-        List<ProductDTO> productDTOList = productService.findAll();
+        List<ProductDTO> productDTOList = productService.findAllProducts();
 
         return ResponseEntity.ok(productDTOList);
     }
@@ -56,7 +56,7 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProductById(@PathVariable UUID id, @Valid @RequestBody UpdateProductRequest updateProductRequest) {
 
-        ProductDTO productDTO = productService.updateById(id, updateProductRequest);
+        ProductDTO productDTO = productService.updateProductById(id, updateProductRequest);
 
         return ResponseEntity.ok(productDTO);
     }
@@ -64,7 +64,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProductById(@PathVariable UUID id) {
 
-        productService.deleteById(id);
+        productService.deleteProductById(id);
 
         return ResponseEntity.noContent().build();
     }
@@ -72,7 +72,7 @@ public class ProductController {
     @DeleteMapping
     public ResponseEntity<Void> deleteAllProducts() {
 
-        productService.deleteAll();
+        productService.deleteAllProducts();
 
         return ResponseEntity.noContent().build();
     }

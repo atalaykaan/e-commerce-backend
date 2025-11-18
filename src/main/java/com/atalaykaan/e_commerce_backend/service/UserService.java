@@ -37,7 +37,7 @@ public class UserService extends BaseService {
     private final JwtService jwtService;
 
     @Transactional
-    public UserDTO save(CreateUserRequest createUserRequest) {
+    public UserDTO saveUser(CreateUserRequest createUserRequest) {
 
         if(userRepository.findByEmail(createUserRequest.getEmail()).isPresent()) {
 
@@ -87,7 +87,7 @@ public class UserService extends BaseService {
         }
     }
 
-    public UserDTO findByEmail(String email) {
+    public UserDTO findUserByEmail(String email) {
 
         User foundUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
@@ -97,7 +97,7 @@ public class UserService extends BaseService {
         return userDTO;
     }
 
-    public UserDTO findById(UUID id) {
+    public UserDTO findUserById(UUID id) {
 
         UserDTO userDTO = userRepository.findById(id)
                 .map(userMapper::toDTO)
@@ -106,7 +106,7 @@ public class UserService extends BaseService {
         return userDTO;
     }
 
-    public List<UserDTO> findAll() {
+    public List<UserDTO> findAllUsers() {
 
         List<UserDTO> userDTOList = userRepository.findAll()
                 .stream()
@@ -122,7 +122,7 @@ public class UserService extends BaseService {
     }
 
     @Transactional
-    public UserDTO updateById(UUID id, UpdateUserRequest updateUserRequest) {
+    public UserDTO updateUserById(UUID id, UpdateUserRequest updateUserRequest) {
 
         User foundUser = userRepository.findById(id)
                 .map(user -> {
@@ -145,7 +145,7 @@ public class UserService extends BaseService {
     }
 
     @Transactional
-    public void deleteById(UUID id) {
+    public void deleteUserById(UUID id) {
 
         userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
@@ -154,7 +154,7 @@ public class UserService extends BaseService {
     }
 
     @Transactional
-    public void deleteAll() {
+    public void deleteAllUsers() {
 
         if(userRepository.findAll().isEmpty()) {
 

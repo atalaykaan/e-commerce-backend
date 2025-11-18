@@ -31,7 +31,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
 
-        UserDTO savedUserDTO = userService.save(createUserRequest);
+        UserDTO savedUserDTO = userService.saveUser(createUserRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -55,7 +55,7 @@ public class UserController {
 
         String email = authentication.getName();
 
-        UserDTO userDTO = userService.findByEmail(email);
+        UserDTO userDTO = userService.findUserByEmail(email);
 
         return ResponseEntity.ok(userDTO);
     }
@@ -63,7 +63,7 @@ public class UserController {
     @GetMapping("/id/{id}")
     public ResponseEntity<UserDTO> findUserById(@PathVariable UUID id) {
 
-        UserDTO userDTO = userService.findById(id);
+        UserDTO userDTO = userService.findUserById(id);
 
         return ResponseEntity.ok(userDTO);
     }
@@ -71,7 +71,7 @@ public class UserController {
     @GetMapping("/email/{email}")
     public ResponseEntity<UserDTO> findUserByEmail(@PathVariable String email) {
 
-        UserDTO userDTO = userService.findByEmail(email);
+        UserDTO userDTO = userService.findUserByEmail(email);
 
         return ResponseEntity.ok(userDTO);
     }
@@ -79,7 +79,7 @@ public class UserController {
     @GetMapping("/all")
     public ResponseEntity<List<UserDTO>> findAllUsers() {
 
-        List<UserDTO> userDTOList = userService.findAll();
+        List<UserDTO> userDTOList = userService.findAllUsers();
 
         return ResponseEntity.ok(userDTOList);
     }
@@ -87,7 +87,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUserById(@PathVariable UUID id, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
 
-        UserDTO userDTO = userService.updateById(id, updateUserRequest);
+        UserDTO userDTO = userService.updateUserById(id, updateUserRequest);
 
         return ResponseEntity.ok(userDTO);
     }
@@ -95,7 +95,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable UUID id) {
 
-        userService.deleteById(id);
+        userService.deleteUserById(id);
 
         return ResponseEntity.noContent().build();
     }
@@ -103,7 +103,7 @@ public class UserController {
     @DeleteMapping
     public ResponseEntity<Void> deleteAllUsers() {
 
-        userService.deleteAll();
+        userService.deleteAllUsers();
 
         return ResponseEntity.noContent().build();
     }

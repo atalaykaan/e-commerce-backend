@@ -61,8 +61,8 @@ public class CartController {
         return ResponseEntity.ok(cartDTO);
     }
 
-    @GetMapping("userId/{userId}")
-    public ResponseEntity<CartDTO> findByUserId(@PathVariable UUID userId) {
+    @GetMapping("/userId/{userId}")
+    public ResponseEntity<CartDTO> findCartByUserId(@PathVariable UUID userId) {
 
         CartDTO cartDTO = cartService.findCartByUserId(userId);
 
@@ -84,26 +84,37 @@ public class CartController {
 
         String email = authentication.getName();
 
-        CartDTO cartDTO = cartService.updateCartItemQuantity(email, updateCartItemRequest);
+        CartDTO cartDTO = cartService.updateCartItemQuantityInCart(email, updateCartItemRequest);
+
+        return ResponseEntity.ok(cartDTO);
+    }
+
+    @DeleteMapping("/cartItem/{cartItemId}")
+    public ResponseEntity<CartDTO> removeItemFromCart(
+            Authentication authentication,
+            @PathVariable UUID cartItemId) {
+
+        String email = authentication.getName();
+
+        CartDTO cartDTO = cartService.removeItemFromCart(email, cartItemId);
 
         return ResponseEntity.ok(cartDTO);
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteCurrentUserCart(
-            Authentication authentication) {
+    public ResponseEntity<Void> deleteCurrentUserCart(Authentication authentication) {
 
         String email = authentication.getName();
 
-        cartService.deleteAllItemsFromCartByEmail(email);
+        cartService.deleteCartByEmail(email);
 
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<Void> deleteCartById(@PathVariable UUID id) {
 
-        cartService.deleteAllItemsFromCartById(id);
+        cartService.deleteCartById(id);
 
         return ResponseEntity.noContent().build();
     }
@@ -115,5 +126,4 @@ public class CartController {
 
         return ResponseEntity.noContent().build();
     }
-
 }

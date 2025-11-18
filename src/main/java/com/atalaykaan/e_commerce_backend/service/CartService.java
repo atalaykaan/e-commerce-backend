@@ -60,7 +60,7 @@ public class CartService {
 
     public CartDTO findCartByUserEmail(String email) {
 
-        UserDTO userDTO = userService.findByEmail(email);
+        UserDTO userDTO = userService.findUserByEmail(email);
 
         CartDTO cartDTO = findCartByUserId(userDTO.getId());
 
@@ -93,7 +93,7 @@ public class CartService {
 
     private void appendItemToCart(CartItem cartItem, Cart cart) {
 
-        ProductDTO productDTO = productService.findById(cartItem.getProductId());
+        ProductDTO productDTO = productService.findProductById(cartItem.getProductId());
 
         if(productDTO.getStock() < cartItem.getQuantity()) {
 
@@ -118,12 +118,10 @@ public class CartService {
     @Transactional
     public CartDTO addItemToCart(String email, AddItemToCartRequest addItemToCartRequest) {
 
-        UserDTO userDTO = userService.findByEmail(email);
+        UserDTO userDTO = userService.findUserByEmail(email);
 
         Cart cart = cartRepository.findByUserId(userDTO.getId())
                 .orElse(createCart(userDTO.getId()));
-
-        System.out.println(cart.getId());
 
         CartItem cartItem = cartItemService.createCartItem(addItemToCartRequest);
 
@@ -136,8 +134,6 @@ public class CartService {
 
         Cart savedCart = cartRepository.save(cart);
 
-        System.out.println(savedCart.getId());
-
         CartDTO cartDTO = cartMapper.toDto(savedCart);
 
         return cartDTO;
@@ -145,9 +141,9 @@ public class CartService {
 
     private CartItem validateUser(String email, UUID cartItemId) {
 
-        UserDTO userDTO = userService.findByEmail(email);
+        UserDTO userDTO = userService.findUserByEmail(email);
 
-        CartItem cartItem = cartItemService.getById(cartItemId);
+        CartItem cartItem = cartItemService.getCartItemById(cartItemId);
 
         Cart cart = cartItem.getCart();
 
@@ -162,7 +158,7 @@ public class CartService {
     }
 
     @Transactional
-    public CartDTO updateCartItemQuantity(String email, UpdateCartItemRequest updateCartItemRequest) {
+    public CartDTO updateCartItemQuantityInCart(String email, UpdateCartItemRequest updateCartItemRequest) {
 
         CartItem cartItem = validateUser(email, updateCartItemRequest.getId());
 
@@ -188,62 +184,72 @@ public class CartService {
             cartItem.setUpdatedAt(dateNow);
 
             cart.setUpdatedAt(dateNow);
-        }
 
-        Cart savedCart = cartRepository.save(cart);
+            Cart savedCart = cartRepository.save(cart);
 
-        CartDTO cartDTO = cartMapper.toDto(savedCart);
+            CartDTO cartDTO = cartMapper.toDto(savedCart);
 
-        return cartDTO;
-    }
-
-    private void checkIfCartIsEmpty(Cart cart) {
-
-        if (cart.getCartItems().isEmpty()) {
-
-            throw new CartItemNotFoundException("Cart is already empty");
+            return cartDTO;
         }
     }
 
     @Transactional
-    public void deleteAllItemsFromCartByEmail(String email) {
+    public CartDTO removeItemFromCart(String email, UUID cartItemId) {
 
-        UserDTO userDTO = userService.findByEmail(email);
+        CartItem cartItem = validateUser(email, cartItemId);
+
+        Cart cart = cartItem.getCart();
+
+        cart.getCartItems().remove(cartItem);
+
+        if(cart.getCartItems().isEmpty()) {
+
+            cartRepository.deleteById(cart.getId());
+
+            return null;
+        }
+        else {
+
+            cart.setUpdatedAt(LocalDateTime.now());
+
+            Cart savedCart = cartRepository.save(cart);
+
+            CartDTO cartDTO = cartMapper.toDto(savedCart);
+
+            return cartDTO;
+        }
+    }
+
+    @Transactional
+    public void deleteCartByEmail(String email) {
+
+        UserDTO userDTO = userService.findUserByEmail(email);
 
         Cart cart = cartRepository.findByUserId(userDTO.getId())
                 .orElseThrow(() -> new CartNotFoundException("Cart not found for user with email: " + email));
 
-        checkIfCartIsEmpty(cart);
-
-        cart.getCartItems().forEach(cartItem -> cartItemService.deleteCartItem(cartItem.getId()));
-
-        cart.getCartItems().clear();
-
-        cart.setUpdatedAt(LocalDateTime.now());
-
-        cartRepository.save(cart);
+        cartRepository.deleteById(cart.getId());
     }
 
     @Transactional
-    public void deleteAllItemsFromCartById(UUID id) {
+    public void deleteCartById(UUID id) {
 
-        Cart cart = cartRepository.findById(id)
+        cartRepository.findById(id)
                 .orElseThrow(() -> new CartNotFoundException("Cart not found with id: " + id));
 
-        checkIfCartIsEmpty(cart);
-
-        cart.getCartItems().forEach(cartItem -> cartItemService.deleteCartItem(cartItem.getId()));
-
-        cart.getCartItems().clear();
-
-        cart.setUpdatedAt(LocalDateTime.now());
-
-        cartRepository.save(cart);
+        cartRepository.deleteById(id);
     }
 
+    @Transactional
     public void deleteAllCarts() {
 
-        userService.findAll()
-                .forEach(user -> deleteAllItemsFromCartById(user.getId()));
+        List<Cart> cartList = cartRepository.findAll();
+
+        if(cartList.isEmpty()) {
+
+            throw new CartNotFoundException("No carts were found");
+        }
+
+        cartRepository.deleteAll();
     }
 }

@@ -35,16 +35,16 @@ public class CartItemService {
                 .build();
     }
 
-    public CartItemDTO findById(UUID id) {
+    public CartItemDTO findCartItemById(UUID id) {
 
-        CartItem cartItem = getById(id);
+        CartItem cartItem = getCartItemById(id);
 
         CartItemDTO cartItemDTO = cartItemMapper.toDto(cartItem);
 
         return cartItemDTO;
     }
 
-    public List<CartItemDTO> findAllCarts() {
+    public List<CartItemDTO> findAllCartItems() {
 
         List<CartItemDTO> cartItemDTOList = cartItemRepository.findAll()
                 .stream()
@@ -59,7 +59,7 @@ public class CartItemService {
         return cartItemDTOList;
     }
 
-    protected CartItem getById(UUID id) {
+    protected CartItem getCartItemById(UUID id) {
 
         CartItem cartItem = cartItemRepository.findById(id)
                 .orElseThrow(() -> new CartItemNotFoundException("Cart item not found with id: " + id));
@@ -78,10 +78,23 @@ public class CartItemService {
     }
 
     @Transactional
-    protected void deleteCartItem(UUID id) {
+    public void deleteCartItem(UUID id) {
 
-        getById(id);
+        getCartItemById(id);
 
         cartItemRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteAllCartItems() {
+
+        List<CartItem> cartItemList = cartItemRepository.findAll();
+
+        if(cartItemList.isEmpty()) {
+
+            throw new CartItemNotFoundException("No cart items were found");
+        }
+
+        cartItemRepository.deleteAll();
     }
 }

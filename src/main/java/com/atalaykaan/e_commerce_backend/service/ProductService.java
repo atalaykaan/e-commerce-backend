@@ -38,7 +38,7 @@ public class ProductService extends BaseService {
             put = @CachePut(value = PRODUCT_CACHE, key = "#result.getId()"),
             evict = @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
     )
-    public ProductDTO save(CreateProductRequest createProductRequest) {
+    public ProductDTO saveProduct(CreateProductRequest createProductRequest) {
 
         validateProductPrice(createProductRequest.getPrice());
 
@@ -58,25 +58,21 @@ public class ProductService extends BaseService {
 
         ProductDTO productDTO = productMapper.toDTO(createdProduct);
 
-        System.out.println("no cache");
-
         return productDTO;
     }
 
     @Cacheable(value = PRODUCT_CACHE, key = "#id")
-    public ProductDTO findById(UUID id) {
+    public ProductDTO findProductById(UUID id) {
 
         ProductDTO productDTO = productRepository.findById(id)
                 .map(productMapper::toDTO)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
 
-        System.out.println("no cache");
-
         return productDTO;
     }
 
     @Cacheable(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
-    public List<ProductDTO> findAll() {
+    public List<ProductDTO> findAllProducts() {
 
         List<ProductDTO> productDTOList = productRepository.findAll()
                 .stream()
@@ -88,8 +84,6 @@ public class ProductService extends BaseService {
             throw new ProductNotFoundException("No products were found");
         }
 
-        System.out.println("no cache");
-
         return productDTOList;
     }
 
@@ -98,7 +92,7 @@ public class ProductService extends BaseService {
             put = @CachePut(value = PRODUCT_CACHE, key = "#id"),
             evict = @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
     )
-    public ProductDTO updateById(UUID id, UpdateProductRequest updateProductRequest) {
+    public ProductDTO updateProductById(UUID id, UpdateProductRequest updateProductRequest) {
 
         if(updateProductRequest.getPrice() != null) {
 
@@ -122,8 +116,6 @@ public class ProductService extends BaseService {
 
         ProductDTO productDTO = productMapper.toDTO(savedProduct);
 
-        System.out.println("no cache");
-
         return productDTO;
     }
 
@@ -134,7 +126,7 @@ public class ProductService extends BaseService {
                     @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
             }
     )
-    public void deleteById(UUID id) {
+    public void deleteProductById(UUID id) {
 
         productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
@@ -148,14 +140,12 @@ public class ProductService extends BaseService {
                     @CacheEvict(value = {PRODUCT_CACHE, PRODUCT_LIST_CACHE}, allEntries = true)
             }
     )
-    public void deleteAll() {
+    public void deleteAllProducts() {
 
         if(productRepository.findAll().isEmpty()) {
 
             throw new ProductNotFoundException("No products were found");
         }
-
-        System.out.println("no cache");
 
         productRepository.deleteAll();
     }

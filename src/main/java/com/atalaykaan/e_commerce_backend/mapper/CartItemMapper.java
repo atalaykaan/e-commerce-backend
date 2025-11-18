@@ -22,7 +22,7 @@ public class CartItemMapper {
 
     public CartItemDTO toDto(CartItem cartItem) {
 
-        ProductDTO productDTO = productService.findById(cartItem.getProductId());
+        ProductDTO productDTO = productService.findProductById(cartItem.getProductId());
 
         return CartItemDTO.builder()
                 .id(cartItem.getId())
