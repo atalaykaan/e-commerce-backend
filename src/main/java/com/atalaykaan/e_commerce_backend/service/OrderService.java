@@ -29,6 +29,8 @@ public class OrderService {
 
     private final OrderItemService orderItemService;
 
+    private final KafkaProducerService kafkaProducerService;
+
     private final UserService userService;
 
     private final CartService cartService;
@@ -70,6 +72,8 @@ public class OrderService {
 
         Order createdOrder = orderRepository.save(order);
 
+        kafkaProducerService.sendOrderCreatedMessage(createdOrder);
+
         OrderDTO orderDTO = orderMapper.toDto(createdOrder);
 
         return orderDTO;
@@ -110,6 +114,8 @@ public class OrderService {
         order.setOrderStatus(updateOrderRequest.getOrderStatus());
 
         Order savedOrder = orderRepository.save(order);
+
+        kafkaProducerService.sendOrderUpdatedMessage(savedOrder);
 
         OrderDTO orderDTO = orderMapper.toDto(savedOrder);
 

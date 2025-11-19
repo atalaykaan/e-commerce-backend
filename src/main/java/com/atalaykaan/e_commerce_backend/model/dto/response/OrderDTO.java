@@ -21,9 +21,9 @@ public class OrderDTO {
 
     private UUID userId;
 
-    private BigDecimal totalPrice;
-
     private List<OrderItemDTO> orderItems;
+
+    private BigDecimal totalPrice;
 
     private OrderStatus orderStatus;
 

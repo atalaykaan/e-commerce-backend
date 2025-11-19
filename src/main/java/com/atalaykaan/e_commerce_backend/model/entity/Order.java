@@ -1,6 +1,7 @@
 package com.atalaykaan.e_commerce_backend.model.entity;
 
 import com.atalaykaan.e_commerce_backend.model.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,7 @@ public class Order {
     private UUID userId;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<OrderItem> orderItems;
 
     private BigDecimal totalPrice;
