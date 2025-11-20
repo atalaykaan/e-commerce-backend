@@ -1,0 +1,11 @@
+package com.atalaykaan.e_commerce_backend.domain.product.mapper;
+
+import com.atalaykaan.e_commerce_backend.domain.product.dto.ProductDTO;
+import com.atalaykaan.e_commerce_backend.domain.product.model.Product;
+import org.mapstruct.Mapper;
+
+@Mapper(componentModel = "spring")
+public interface ProductMapper {
+
+    ProductDTO toDTO(Product product);
+}
