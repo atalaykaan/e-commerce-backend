@@ -113,6 +113,8 @@ public class OrderService {
 
         order.setOrderStatus(updateOrderRequest.getOrderStatus());
 
+        order.setUpdatedAt(LocalDateTime.now());
+
         Order savedOrder = orderRepository.save(order);
 
         kafkaProducerService.sendOrderUpdatedMessage(savedOrder);
