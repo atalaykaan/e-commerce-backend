@@ -1,36 +1,36 @@
-package com.atalaykaan.e_commerce_backend.domain.user.dto;
+package com.atalaykaan.e_commerce_backend.domain.user.dto.request;
 
 import com.atalaykaan.e_commerce_backend.domain.user.enums.Role;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class UserDTO {
+public class CreateUserRequest {
 
-    private UUID id;
-
+    @NotBlank
     private String firstName;
 
+    @NotBlank
     private String lastName;
 
+    @NotBlank
+    @Email
     private String email;
 
+    @NotBlank
     private String password;
 
+    @NotBlank
     private String phone;
 
+    @Size(min = 1)
     private Set<Role> authorities;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
 }

@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.domain.cart.dto;
+package com.atalaykaan.e_commerce_backend.domain.cart.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -11,12 +11,12 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddItemToCartRequest {
+public class UpdateCartItemRequest {
 
     @NotNull
-    private UUID productId;
+    private UUID cartItemId;
 
     @NotNull
-    @Min(value = 1, message = "Quantity must be at least one")
+    @Min(value = 0, message = "Cart item quantity cannot be less than zero")
     private Long quantity;
 }

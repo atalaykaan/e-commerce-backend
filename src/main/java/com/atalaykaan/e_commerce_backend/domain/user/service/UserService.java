@@ -1,9 +1,9 @@
 package com.atalaykaan.e_commerce_backend.domain.user.service;
 
-import com.atalaykaan.e_commerce_backend.domain.auth.dto.AuthRequest;
-import com.atalaykaan.e_commerce_backend.domain.user.dto.CreateUserRequest;
-import com.atalaykaan.e_commerce_backend.domain.user.dto.UpdateUserRequest;
-import com.atalaykaan.e_commerce_backend.domain.user.dto.UserDTO;
+import com.atalaykaan.e_commerce_backend.domain.auth.dto.request.AuthRequest;
+import com.atalaykaan.e_commerce_backend.domain.user.dto.request.CreateUserRequest;
+import com.atalaykaan.e_commerce_backend.domain.user.dto.request.UpdateUserRequest;
+import com.atalaykaan.e_commerce_backend.domain.user.dto.response.UserDTO;
 import com.atalaykaan.e_commerce_backend.common.exception.UserNotFoundException;
 import com.atalaykaan.e_commerce_backend.common.exception.UserWithEmailAlreadyExistsException;
 import com.atalaykaan.e_commerce_backend.domain.user.mapper.UserMapper;

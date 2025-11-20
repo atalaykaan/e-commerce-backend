@@ -1,7 +1,7 @@
 package com.atalaykaan.e_commerce_backend.domain.cart.mapper;
 
-import com.atalaykaan.e_commerce_backend.domain.cart.dto.CartItemDTO;
-import com.atalaykaan.e_commerce_backend.domain.product.dto.ProductDTO;
+import com.atalaykaan.e_commerce_backend.domain.cart.dto.response.CartItemDTO;
+import com.atalaykaan.e_commerce_backend.domain.product.dto.response.ProductDTO;
 import com.atalaykaan.e_commerce_backend.domain.cart.model.CartItem;
 import com.atalaykaan.e_commerce_backend.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;

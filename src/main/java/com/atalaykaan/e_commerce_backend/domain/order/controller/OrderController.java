@@ -1,7 +1,7 @@
 package com.atalaykaan.e_commerce_backend.domain.order.controller;
 
-import com.atalaykaan.e_commerce_backend.domain.order.dto.UpdateOrderRequest;
-import com.atalaykaan.e_commerce_backend.domain.order.dto.OrderDTO;
+import com.atalaykaan.e_commerce_backend.domain.order.dto.request.UpdateOrderRequest;
+import com.atalaykaan.e_commerce_backend.domain.order.dto.response.OrderDTO;
 import com.atalaykaan.e_commerce_backend.domain.order.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

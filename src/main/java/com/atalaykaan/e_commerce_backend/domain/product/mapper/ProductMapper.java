@@ -1,6 +1,6 @@
 package com.atalaykaan.e_commerce_backend.domain.product.mapper;
 
-import com.atalaykaan.e_commerce_backend.domain.product.dto.ProductDTO;
+import com.atalaykaan.e_commerce_backend.domain.product.dto.response.ProductDTO;
 import com.atalaykaan.e_commerce_backend.domain.product.model.Product;
 import org.mapstruct.Mapper;
 

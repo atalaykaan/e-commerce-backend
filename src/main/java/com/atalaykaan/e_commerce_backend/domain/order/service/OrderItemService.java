@@ -1,6 +1,6 @@
 package com.atalaykaan.e_commerce_backend.domain.order.service;
 
-import com.atalaykaan.e_commerce_backend.domain.cart.dto.CartItemDTO;
+import com.atalaykaan.e_commerce_backend.domain.cart.dto.response.CartItemDTO;
 import com.atalaykaan.e_commerce_backend.domain.order.model.OrderItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

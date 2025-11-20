@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.domain.order.dto;
+package com.atalaykaan.e_commerce_backend.domain.order.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

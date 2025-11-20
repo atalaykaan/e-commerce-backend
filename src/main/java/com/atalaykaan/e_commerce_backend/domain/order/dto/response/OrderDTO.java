@@ -1,6 +1,6 @@
-package com.atalaykaan.e_commerce_backend.domain.cart.dto;
+package com.atalaykaan.e_commerce_backend.domain.order.dto.response;
 
-
+import com.atalaykaan.e_commerce_backend.domain.order.enums.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,15 +15,17 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CartDTO {
+public class OrderDTO {
 
     private UUID id;
 
     private UUID userId;
 
-    private List<CartItemDTO> cartItems;
+    private List<OrderItemDTO> orderItems;
 
     private BigDecimal totalPrice;
+
+    private OrderStatus orderStatus;
 
     private LocalDateTime createdAt;
 

@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.domain.cart.dto;
+package com.atalaykaan.e_commerce_backend.domain.product.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,15 +13,19 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CartItemDTO {
+public class ProductDTO {
 
     private UUID id;
 
-    private UUID productId;
+    private String name;
 
     private BigDecimal price;
 
-    private Long quantity;
+    private String description;
+
+    private String brand;
+
+    private Long stock;
 
     private LocalDateTime createdAt;
 

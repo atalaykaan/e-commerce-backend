@@ -1,8 +1,8 @@
 package com.atalaykaan.e_commerce_backend.domain.product.controller;
 
-import com.atalaykaan.e_commerce_backend.domain.product.dto.CreateProductRequest;
-import com.atalaykaan.e_commerce_backend.domain.product.dto.UpdateProductRequest;
-import com.atalaykaan.e_commerce_backend.domain.product.dto.ProductDTO;
+import com.atalaykaan.e_commerce_backend.domain.product.dto.request.CreateProductRequest;
+import com.atalaykaan.e_commerce_backend.domain.product.dto.request.UpdateProductRequest;
+import com.atalaykaan.e_commerce_backend.domain.product.dto.response.ProductDTO;
 import com.atalaykaan.e_commerce_backend.domain.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

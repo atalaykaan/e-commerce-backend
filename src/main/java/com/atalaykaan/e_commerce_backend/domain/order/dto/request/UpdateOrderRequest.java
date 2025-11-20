@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.domain.order.dto;
+package com.atalaykaan.e_commerce_backend.domain.order.dto.request;
 
 import com.atalaykaan.e_commerce_backend.domain.order.enums.OrderStatus;
 import jakarta.validation.constraints.NotNull;

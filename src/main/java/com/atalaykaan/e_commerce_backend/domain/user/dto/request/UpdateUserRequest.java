@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.domain.user.dto;
+package com.atalaykaan.e_commerce_backend.domain.user.dto.request;
 
 import com.atalaykaan.e_commerce_backend.domain.user.enums.Role;
 import lombok.AllArgsConstructor;
