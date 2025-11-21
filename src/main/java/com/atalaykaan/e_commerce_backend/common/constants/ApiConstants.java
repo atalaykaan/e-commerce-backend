@@ -10,4 +10,5 @@ public class ApiConstants {
     public static final String API_CARTS = "/carts";
     public static final String API_CART_ITEMS = "/cartItems";
     public static final String API_ORDERS = "/orders";
+    public static final String API_PAYMENTS = "/payments";
 }

@@ -136,6 +136,24 @@ public class GeneralExceptionAdvisor extends ResponseEntityExceptionHandler {
         );
     }
 
+    @ExceptionHandler(PaymentFailedException.class)
+    public ResponseEntity<Object> handlePaymentFailedException(PaymentFailedException ex, WebRequest request) {
+
+        return new ResponseEntity<>(
+                List.of(ex.getMessage(), request.getDescription(false)),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(PaymentNotFoundException.class)
+    public ResponseEntity<Object> PaymentNotFoundException(PaymentNotFoundException ex, WebRequest request) {
+
+        return new ResponseEntity<>(
+                List.of(ex.getMessage(), request.getDescription(false)),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
 
