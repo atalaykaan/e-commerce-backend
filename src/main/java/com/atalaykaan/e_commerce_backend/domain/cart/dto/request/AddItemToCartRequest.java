@@ -14,7 +14,7 @@ import java.util.UUID;
 public class AddItemToCartRequest {
 
     @NotNull
-    private UUID productId;
+    private Long productId;
 
     @NotNull
     @Min(value = 1, message = "Quantity must be at least one")

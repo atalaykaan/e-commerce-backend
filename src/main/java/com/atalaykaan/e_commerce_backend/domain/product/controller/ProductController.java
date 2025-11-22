@@ -38,7 +38,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> findProductById(@PathVariable UUID id) {
+    public ResponseEntity<ProductDTO> findProductById(@PathVariable Long id) {
 
         ProductDTO productDTO = productService.findProductById(id);
 
@@ -54,7 +54,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProductById(@PathVariable UUID id, @Valid @RequestBody UpdateProductRequest updateProductRequest) {
+    public ResponseEntity<ProductDTO> updateProductById(@PathVariable Long id, @Valid @RequestBody UpdateProductRequest updateProductRequest) {
 
         ProductDTO productDTO = productService.updateProductById(id, updateProductRequest);
 
@@ -62,7 +62,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProductById(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
 
         productService.deleteProductById(id);
 

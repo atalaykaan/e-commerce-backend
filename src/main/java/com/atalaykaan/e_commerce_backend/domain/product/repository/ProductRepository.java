@@ -1,10 +1,8 @@
 package com.atalaykaan.e_commerce_backend.domain.product.repository;
 
 import com.atalaykaan.e_commerce_backend.domain.product.model.Product;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.UUID;
-
-public interface ProductRepository extends JpaRepository<Product, UUID> {
+public interface ProductRepository extends MongoRepository<Product, Long> {
 
 }

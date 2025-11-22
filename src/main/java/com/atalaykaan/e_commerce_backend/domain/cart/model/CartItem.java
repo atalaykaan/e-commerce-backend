@@ -21,7 +21,7 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private UUID productId;
+    private Long productId;
 
     private Long quantity;
 

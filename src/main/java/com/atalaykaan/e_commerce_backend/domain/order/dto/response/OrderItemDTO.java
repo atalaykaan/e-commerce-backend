@@ -15,7 +15,7 @@ public class OrderItemDTO {
 
     private UUID id;
 
-    private UUID productId;
+    private Long productId;
 
     private Integer quantity;
 }

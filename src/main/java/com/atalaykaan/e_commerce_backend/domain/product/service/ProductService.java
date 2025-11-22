@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 @Service
@@ -30,6 +29,8 @@ public class ProductService{
     private final ProductRepository productRepository;
 
     private final ProductMapper productMapper;
+
+    private final SequenceGeneratorService sequenceGeneratorService;
 
     private static final String PRODUCT_CACHE = "product";
 
@@ -48,6 +49,7 @@ public class ProductService{
 
         Product createdProduct = productRepository.save(
                 Product.builder()
+                        .id(sequenceGeneratorService.generateSequence(Product.SEQUENCE_NAME))
                         .name(createProductRequest.getName())
                         .description(createProductRequest.getDescription())
                         .brand(createProductRequest.getBrand())
@@ -64,7 +66,7 @@ public class ProductService{
     }
 
     @Cacheable(value = PRODUCT_CACHE, key = "#id")
-    public ProductDTO findProductById(UUID id) {
+    public ProductDTO findProductById(Long id) {
 
         ProductDTO productDTO = productRepository.findById(id)
                 .map(productMapper::toDTO)
@@ -94,7 +96,7 @@ public class ProductService{
             put = @CachePut(value = PRODUCT_CACHE, key = "#id"),
             evict = @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
     )
-    public ProductDTO updateProductById(UUID id, UpdateProductRequest updateProductRequest) {
+    public ProductDTO updateProductById(Long id, UpdateProductRequest updateProductRequest) {
 
         if(updateProductRequest.getPrice() != null) {
 
@@ -134,7 +136,7 @@ public class ProductService{
             put = @CachePut(value = PRODUCT_CACHE, key = "#id"),
             evict = @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
     )
-    public ProductDTO decreaseProductStock(UUID id, Long quantity) {
+    public ProductDTO decreaseProductStock(Long id, Long quantity) {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
@@ -162,7 +164,7 @@ public class ProductService{
                     @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
             }
     )
-    public void deleteProductById(UUID id) {
+    public void deleteProductById(Long id) {
 
         productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));

@@ -17,7 +17,7 @@ public class CartItemDTO {
 
     private UUID id;
 
-    private UUID productId;
+    private Long productId;
 
     private BigDecimal price;
 
