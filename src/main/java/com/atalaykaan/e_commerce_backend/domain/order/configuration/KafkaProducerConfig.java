@@ -23,7 +23,7 @@ public class KafkaProducerConfig {
     private String boostrapServers;
 
     @Bean
-    public ProducerFactory<String, Order> producerFactory() {
+    public ProducerFactory<String, Object> producerFactory() {
 
         Map<String, Object> props = new HashMap<>();
 
@@ -35,7 +35,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, Order> kafkaTemplate() {
+    public KafkaTemplate<String, Object> kafkaTemplate() {
 
         return new KafkaTemplate<>(producerFactory());
     }

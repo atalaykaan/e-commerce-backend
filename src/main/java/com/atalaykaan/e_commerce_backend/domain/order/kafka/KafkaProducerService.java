@@ -18,7 +18,7 @@ public class KafkaProducerService {
     @Value("${spring.kafka.topic.order-updated}")
     private String orderUpdatedTopic;
 
-    private final KafkaTemplate<String, Order> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void sendOrderCreatedMessage(Order order) {
 
