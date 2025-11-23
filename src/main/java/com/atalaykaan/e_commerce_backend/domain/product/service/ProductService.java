@@ -136,7 +136,7 @@ public class ProductService{
             put = @CachePut(value = PRODUCT_CACHE, key = "#id"),
             evict = @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
     )
-    public ProductDTO decreaseProductStock(Long id, Long quantity) {
+    ProductDTO decreaseProductStock(Long id, Long quantity) {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));

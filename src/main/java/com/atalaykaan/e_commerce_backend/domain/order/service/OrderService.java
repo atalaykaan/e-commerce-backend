@@ -1,23 +1,18 @@
 package com.atalaykaan.e_commerce_backend.domain.order.service;
 
 import com.atalaykaan.e_commerce_backend.common.exception.OrderNotFoundException;
-import com.atalaykaan.e_commerce_backend.common.exception.PaymentFailedException;
 import com.atalaykaan.e_commerce_backend.domain.cart.service.CartService;
 import com.atalaykaan.e_commerce_backend.domain.order.mapper.OrderMapper;
 import com.atalaykaan.e_commerce_backend.domain.order.dto.request.UpdateOrderRequest;
 import com.atalaykaan.e_commerce_backend.domain.cart.dto.response.CartDTO;
 import com.atalaykaan.e_commerce_backend.domain.cart.dto.response.CartItemDTO;
 import com.atalaykaan.e_commerce_backend.domain.order.dto.response.OrderDTO;
-import com.atalaykaan.e_commerce_backend.domain.payment.dto.response.PaymentDTO;
-import com.atalaykaan.e_commerce_backend.domain.payment.enums.PaymentStatus;
-import com.atalaykaan.e_commerce_backend.domain.payment.service.PaymentService;
 import com.atalaykaan.e_commerce_backend.domain.user.dto.response.UserDTO;
 import com.atalaykaan.e_commerce_backend.domain.order.model.Order;
 import com.atalaykaan.e_commerce_backend.domain.order.model.OrderItem;
 import com.atalaykaan.e_commerce_backend.domain.order.enums.OrderStatus;
 import com.atalaykaan.e_commerce_backend.domain.order.repository.OrderRepository;
 import com.atalaykaan.e_commerce_backend.domain.order.kafka.KafkaProducerService;
-import com.atalaykaan.e_commerce_backend.domain.product.service.ProductService;
 import com.atalaykaan.e_commerce_backend.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,10 +37,6 @@ public class OrderService {
     private final UserService userService;
 
     private final CartService cartService;
-
-    private final ProductService productService;
-
-    private final PaymentService paymentService;
 
     @Transactional
     public OrderDTO placeOrder(String email) {
@@ -74,22 +65,7 @@ public class OrderService {
 
         Order createdOrder = orderRepository.save(order);
 
-        PaymentDTO paymentDTO = paymentService.createPayment(createdOrder.getId(), userDTO.getId());
-
-        if(!paymentDTO.getPaymentStatus().equals(PaymentStatus.APPROVED)) {
-
-            throw new PaymentFailedException("Payment failed");
-        }
-
         kafkaProducerService.sendOrderCreatedMessage(createdOrder);
-
-        orderItems.forEach(
-                orderItem -> {
-                    productService.decreaseProductStock(orderItem.getProductId(), orderItem.getQuantity());
-                    orderItem.setOrder(order);
-                });
-
-        cartService.deleteCartByEmail(email);
 
         OrderDTO orderDTO = orderMapper.toDto(createdOrder);
 

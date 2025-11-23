@@ -1,5 +1,6 @@
 package com.atalaykaan.e_commerce_backend.domain.payment.service;
 
+import com.atalaykaan.e_commerce_backend.common.exception.PaymentFailedException;
 import com.atalaykaan.e_commerce_backend.common.exception.PaymentNotFoundException;
 import com.atalaykaan.e_commerce_backend.domain.payment.dto.response.PaymentDTO;
 import com.atalaykaan.e_commerce_backend.domain.payment.enums.PaymentStatus;
@@ -70,5 +71,13 @@ public class PaymentService {
                 .orElseThrow(() -> new PaymentNotFoundException("Payment not found with id: " + id));
 
         return paymentDTO;
+    }
+
+    void validatePayment(PaymentDTO paymentDTO) {
+
+        if(!paymentDTO.getPaymentStatus().equals(PaymentStatus.APPROVED)) {
+
+            throw new PaymentFailedException("Payment failed");
+        }
     }
 }

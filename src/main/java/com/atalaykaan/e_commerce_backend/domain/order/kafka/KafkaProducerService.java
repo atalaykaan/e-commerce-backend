@@ -12,21 +12,24 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class KafkaProducerService {
 
-    @Value("${spring.kafka.topic}")
-    private String topic;
+    @Value("${spring.kafka.topic.order-created}")
+    private String orderCreatedTopic;
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    @Value("${spring.kafka.topic.order-updated}")
+    private String orderUpdatedTopic;
+
+    private final KafkaTemplate<String, Order> kafkaTemplate;
 
     public void sendOrderCreatedMessage(Order order) {
 
-        kafkaTemplate.send(topic, order);
+        kafkaTemplate.send(orderCreatedTopic, order);
 
         log.info("Order received: {}", order);
     }
 
     public void sendOrderUpdatedMessage(Order order) {
 
-        kafkaTemplate.send(topic, order);
+        kafkaTemplate.send(orderUpdatedTopic, order);
 
         log.info("Order updated: {}", order);
     }

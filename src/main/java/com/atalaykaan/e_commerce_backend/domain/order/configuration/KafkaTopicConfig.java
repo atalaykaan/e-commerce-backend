@@ -9,14 +9,25 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class KafkaTopicConfig {
 
-    @Value("${spring.kafka.topic}")
-    private String topicName;
+    @Value("${spring.kafka.topic.order-created}")
+    private String orderCreatedTopic;
+
+    @Value("${spring.kafka.topic.order-updated}")
+    private String orderUpdatedTopic;
 
     @Bean
-    public NewTopic ordersTopic() {
+    public NewTopic orderCreatedTopic() {
 
         return TopicBuilder
-                .name(topicName)
+                .name(orderCreatedTopic)
+                .build();
+    }
+
+    @Bean
+    public NewTopic orderUpdatedTopic() {
+
+        return TopicBuilder
+                .name(orderUpdatedTopic)
                 .build();
     }
 }

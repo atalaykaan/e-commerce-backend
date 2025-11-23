@@ -1,5 +1,6 @@
 package com.atalaykaan.e_commerce_backend.domain.order.configuration;
 
+import com.atalaykaan.e_commerce_backend.domain.order.model.Order;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +23,7 @@ public class KafkaProducerConfig {
     private String boostrapServers;
 
     @Bean
-    public ProducerFactory<String, Object> producerFactory() {
+    public ProducerFactory<String, Order> producerFactory() {
 
         Map<String, Object> props = new HashMap<>();
 
@@ -34,7 +35,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, Object> kafkaTemplate() {
+    public KafkaTemplate<String, Order> kafkaTemplate() {
 
         return new KafkaTemplate<>(producerFactory());
     }
