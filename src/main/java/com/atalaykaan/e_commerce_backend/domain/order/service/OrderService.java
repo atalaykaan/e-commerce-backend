@@ -63,6 +63,8 @@ public class OrderService {
                 .updatedAt(dateNow)
                 .build();
 
+        order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
+
         Order createdOrder = orderRepository.save(order);
 
         kafkaProducerService.sendOrderCreatedMessage(createdOrder);

@@ -19,11 +19,6 @@ public class ProductEventListenerService {
 
         List<OrderItem> orderItems = order.getOrderItems();
 
-        orderItems.forEach(
-                orderItem -> {
-                    productService.decreaseProductStock(orderItem.getProductId(), orderItem.getQuantity());
-                    orderItem.setOrder(order);
-                }
-        );
+        orderItems.forEach(orderItem -> productService.decreaseProductStock(orderItem.getProductId(), orderItem.getQuantity()));
     }
 }
