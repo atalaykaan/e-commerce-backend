@@ -41,8 +41,6 @@ public class OrderService {
     @Transactional
     public OrderDTO placeOrder(String email) {
 
-        UserDTO userDTO = userService.findUserByEmail(email);
-
         CartDTO cartDTO = cartService.findCartByUserEmail(email);
 
         List<CartItemDTO> cartItemDTOList = cartDTO.getCartItems();
@@ -55,7 +53,7 @@ public class OrderService {
         LocalDateTime dateNow = LocalDateTime.now();
 
         Order order = Order.builder()
-                .userId(userDTO.getId())
+                .userId(cartDTO.getUserId())
                 .totalPrice(cartDTO.getTotalPrice())
                 .orderItems(orderItems)
                 .orderStatus(OrderStatus.RECEIVED)

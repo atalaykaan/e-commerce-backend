@@ -8,6 +8,7 @@ import com.atalaykaan.e_commerce_backend.domain.product.dto.response.ProductDTO;
 import com.atalaykaan.e_commerce_backend.common.exception.ProductNotFoundException;
 import com.atalaykaan.e_commerce_backend.domain.product.mapper.ProductMapper;
 import com.atalaykaan.e_commerce_backend.domain.product.model.Product;
+import com.atalaykaan.e_commerce_backend.domain.product.model.ProductDocument;
 import com.atalaykaan.e_commerce_backend.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -29,6 +30,8 @@ public class ProductService{
     private final ProductRepository productRepository;
 
     private final ProductMapper productMapper;
+
+    private final ProductSearchService productSearchService;
 
     private final SequenceGeneratorService sequenceGeneratorService;
 
@@ -59,6 +62,8 @@ public class ProductService{
                         .updatedAt(now)
                         .build()
         );
+
+        productSearchService.indexProduct(createdProduct);
 
         ProductDTO productDTO = productMapper.toDTO(createdProduct);
 
@@ -118,6 +123,8 @@ public class ProductService{
 
         Product savedProduct = productRepository.save(foundProduct);
 
+        productSearchService.indexProduct(savedProduct);
+
         ProductDTO productDTO = productMapper.toDTO(savedProduct);
 
         return productDTO;
@@ -152,6 +159,8 @@ public class ProductService{
 
         Product savedProduct = productRepository.save(product);
 
+        productSearchService.indexProduct(savedProduct);
+
         ProductDTO productDTO = productMapper.toDTO(savedProduct);
 
         return productDTO;
@@ -170,6 +179,8 @@ public class ProductService{
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
 
         productRepository.deleteById(id);
+
+        productSearchService.deleteProduct(id);
     }
 
     @Transactional
@@ -186,6 +197,8 @@ public class ProductService{
         }
 
         productRepository.deleteAll();
+
+        productSearchService.deleteAllProducts();
     }
 
     private void validateProductPrice(BigDecimal price) {
@@ -194,5 +207,17 @@ public class ProductService{
 
             throw new InvalidProductPriceException("Product price cannot be lower than zero");
         }
+    }
+
+    public List<ProductDocument> searchByText(String searchText) {
+
+        List<ProductDocument> productDocumentList = productSearchService.searchByText(searchText);
+
+        if(productDocumentList.isEmpty()) {
+
+            throw new ProductNotFoundException("No products were found");
+        }
+
+        return productDocumentList;
     }
 }

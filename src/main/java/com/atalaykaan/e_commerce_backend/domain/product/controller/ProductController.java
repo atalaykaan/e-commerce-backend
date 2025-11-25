@@ -3,6 +3,8 @@ package com.atalaykaan.e_commerce_backend.domain.product.controller;
 import com.atalaykaan.e_commerce_backend.domain.product.dto.request.CreateProductRequest;
 import com.atalaykaan.e_commerce_backend.domain.product.dto.request.UpdateProductRequest;
 import com.atalaykaan.e_commerce_backend.domain.product.dto.response.ProductDTO;
+import com.atalaykaan.e_commerce_backend.domain.product.model.ProductDocument;
+import com.atalaykaan.e_commerce_backend.domain.product.service.ProductSearchService;
 import com.atalaykaan.e_commerce_backend.domain.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,8 @@ import static com.atalaykaan.e_commerce_backend.common.constants.ApiConstants.*;
 public class ProductController {
 
     private final ProductService productService;
+
+    private final ProductSearchService productSearchService;
 
     @PostMapping
     public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody CreateProductRequest createProductRequest) {
@@ -75,5 +79,13 @@ public class ProductController {
         productService.deleteAllProducts();
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDocument>> searchProducts(@RequestParam String query) {
+
+        List<ProductDocument> productDocument = productService.searchByText(query);
+
+        return ResponseEntity.ok(productDocument);
     }
 }

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Document
+@Document(collection = "products")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

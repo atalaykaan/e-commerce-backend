@@ -49,7 +49,20 @@ services:
     volumes:
       - mongodb_data:/data/db
 
+  elasticsearch:
+    image: elasticsearch:9.2.0
+    container_name: ecommerce_elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+
 volumes:
   postgres_data:
   redis_data:
   mongodb_data:
+  elasticsearch_data:
