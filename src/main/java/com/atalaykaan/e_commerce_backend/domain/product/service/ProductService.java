@@ -8,7 +8,6 @@ import com.atalaykaan.e_commerce_backend.domain.product.dto.response.ProductDTO;
 import com.atalaykaan.e_commerce_backend.common.exception.ProductNotFoundException;
 import com.atalaykaan.e_commerce_backend.domain.product.mapper.ProductMapper;
 import com.atalaykaan.e_commerce_backend.domain.product.model.Product;
-import com.atalaykaan.e_commerce_backend.domain.product.model.ProductDocument;
 import com.atalaykaan.e_commerce_backend.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -50,20 +49,20 @@ public class ProductService{
 
         LocalDateTime now = LocalDateTime.now();
 
-        Product createdProduct = productRepository.save(
-                Product.builder()
-                        .id(sequenceGeneratorService.generateSequence(Product.SEQUENCE_NAME))
-                        .name(createProductRequest.getName())
-                        .description(createProductRequest.getDescription())
-                        .brand(createProductRequest.getBrand())
-                        .price(createProductRequest.getPrice())
-                        .stock(createProductRequest.getStock())
-                        .createdAt(now)
-                        .updatedAt(now)
-                        .build()
-        );
+        Product product = Product.builder()
+                .id(sequenceGeneratorService.generateSequence(Product.SEQUENCE_NAME))
+                .name(createProductRequest.getName())
+                .description(createProductRequest.getDescription())
+                .brand(createProductRequest.getBrand())
+                .price(createProductRequest.getPrice())
+                .stock(createProductRequest.getStock())
+                .createdAt(now)
+                .updatedAt(now)
+                .build();
 
-        productSearchService.indexProduct(createdProduct);
+        productSearchService.indexProduct(product);
+
+        Product createdProduct = productRepository.save(product);
 
         ProductDTO productDTO = productMapper.toDTO(createdProduct);
 
@@ -121,9 +120,9 @@ public class ProductService{
                 })
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
 
-        Product savedProduct = productRepository.save(foundProduct);
+        productSearchService.indexProduct(foundProduct);
 
-        productSearchService.indexProduct(savedProduct);
+        Product savedProduct = productRepository.save(foundProduct);
 
         ProductDTO productDTO = productMapper.toDTO(savedProduct);
 
@@ -178,9 +177,9 @@ public class ProductService{
         productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
 
-        productRepository.deleteById(id);
-
         productSearchService.deleteProduct(id);
+
+        productRepository.deleteById(id);
     }
 
     @Transactional
@@ -196,9 +195,9 @@ public class ProductService{
             throw new ProductNotFoundException("No products were found");
         }
 
-        productRepository.deleteAll();
-
         productSearchService.deleteAllProducts();
+
+        productRepository.deleteAll();
     }
 
     private void validateProductPrice(BigDecimal price) {
@@ -209,9 +208,27 @@ public class ProductService{
         }
     }
 
-    public List<ProductDocument> searchByText(String searchText) {
+    public List<ProductDTO> getAllDataFromIndex(String searchText) {
 
-        List<ProductDocument> productDocumentList = productSearchService.searchByText(searchText);
+        List<ProductDTO> productDocumentList = productSearchService.getAllDataFromIndex(searchText)
+                .stream()
+                .map(productMapper::documentToDTO)
+                .toList();
+
+        if(productDocumentList.isEmpty()) {
+
+            throw new ProductNotFoundException("No products were found");
+        }
+
+        return productDocumentList;
+    }
+
+    public List<ProductDTO> searchProductsByName(String productName) {
+
+        List<ProductDTO> productDocumentList = productSearchService.searchDocumentsByName(productName)
+                .stream()
+                .map(productMapper::documentToDTO)
+                .toList();
 
         if(productDocumentList.isEmpty()) {
 

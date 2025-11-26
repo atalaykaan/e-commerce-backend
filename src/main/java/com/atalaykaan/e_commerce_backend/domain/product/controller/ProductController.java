@@ -3,8 +3,6 @@ package com.atalaykaan.e_commerce_backend.domain.product.controller;
 import com.atalaykaan.e_commerce_backend.domain.product.dto.request.CreateProductRequest;
 import com.atalaykaan.e_commerce_backend.domain.product.dto.request.UpdateProductRequest;
 import com.atalaykaan.e_commerce_backend.domain.product.dto.response.ProductDTO;
-import com.atalaykaan.e_commerce_backend.domain.product.model.ProductDocument;
-import com.atalaykaan.e_commerce_backend.domain.product.service.ProductSearchService;
 import com.atalaykaan.e_commerce_backend.domain.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +12,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 import static com.atalaykaan.e_commerce_backend.common.constants.ApiConstants.*;
 
@@ -24,8 +21,6 @@ import static com.atalaykaan.e_commerce_backend.common.constants.ApiConstants.*;
 public class ProductController {
 
     private final ProductService productService;
-
-    private final ProductSearchService productSearchService;
 
     @PostMapping
     public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody CreateProductRequest createProductRequest) {
@@ -81,10 +76,18 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<ProductDocument>> searchProducts(@RequestParam String query) {
+    @GetMapping("/index/{searchIndex}")
+    public ResponseEntity<List<ProductDTO>> getAllDataFromIndex(@PathVariable String searchIndex) {
 
-        List<ProductDocument> productDocument = productService.searchByText(query);
+        List<ProductDTO> productDocument = productService.getAllDataFromIndex(searchIndex);
+
+        return ResponseEntity.ok(productDocument);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDTO>> searchProductsByName(@RequestParam String name) {
+
+        List<ProductDTO> productDocument = productService.searchProductsByName(name);
 
         return ResponseEntity.ok(productDocument);
     }
