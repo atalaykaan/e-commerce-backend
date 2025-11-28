@@ -37,12 +37,14 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         request ->
                                 request
                                         .requestMatchers(API_PREFIX + API_VERSION + API_USERS + "/register", API_PREFIX + API_VERSION + API_USERS + "/login").permitAll()
+                                        .requestMatchers("/v3/**").permitAll()
+                                        .requestMatchers("/swagger-ui/**").permitAll()
                                         .requestMatchers(HttpMethod.GET, API_PREFIX + API_VERSION + API_USERS).hasRole("USER")
                                         .requestMatchers(HttpMethod.GET, API_PREFIX + API_VERSION + API_PRODUCTS).hasRole("USER")
                                         .requestMatchers(HttpMethod.GET, API_PREFIX + API_VERSION + API_PRODUCTS + "/*").hasRole("USER")

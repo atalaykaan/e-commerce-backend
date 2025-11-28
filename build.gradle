@@ -35,6 +35,7 @@ dependencies {
 	implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.mapstruct:mapstruct:1.6.3'
     implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
