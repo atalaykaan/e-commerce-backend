@@ -46,17 +46,20 @@ public class UserService{
             throw new UserWithEmailAlreadyExistsException("User already exists with email: " + createUserRequest.getEmail());
         }
 
-        User createdUser = userRepository.save(
-                User.builder()
-                        .firstName(createUserRequest.getFirstName())
-                        .lastName(createUserRequest.getLastName())
-                        .email(createUserRequest.getEmail())
-                        .password(passwordEncoder.encode(createUserRequest.getPassword()))
-                        .phone(createUserRequest.getPhone())
-                        .authorities(createUserRequest.getAuthorities())
-                        .createdAt(LocalDateTime.now())
-                        .build()
-        );
+        LocalDateTime dateNow = LocalDateTime.now();
+
+        User user = User.builder()
+                .firstName(createUserRequest.getFirstName())
+                .lastName(createUserRequest.getLastName())
+                .email(createUserRequest.getEmail())
+                .password(passwordEncoder.encode(createUserRequest.getPassword()))
+                .phone(createUserRequest.getPhone())
+                .authorities(createUserRequest.getAuthorities())
+                .createdAt(dateNow)
+                .updatedAt(dateNow)
+                .build();
+
+        User createdUser = userRepository.save(user);
 
         UserDTO userDTO = userMapper.toDTO(createdUser);
 
@@ -134,6 +137,7 @@ public class UserService{
                     updateIfExists(updateUserRequest.getPassword(), password -> user.setPassword(passwordEncoder.encode(password)));
                     updateIfExists(updateUserRequest.getPhone(), user::setPhone);
                     updateIfExists(updateUserRequest.getAuthorities(), user::setAuthorities);
+                    user.setUpdatedAt(LocalDateTime.now());
 
                     return user;
                 })
