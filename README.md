@@ -1,5 +1,7 @@
 Spring Boot ile tasarlanan bir e-ticaret sitesi backend servisi. Hesap, ürün oluşturma, sepete ekleme, sipariş verme ve ödeme yapma hizmetlerini sunan event-driven bir hizmet.
 
+swagger: http://localhost:8080/swagger-ui/index.html
+
 Kullanılan teknolojiler:
 Java,
 Gradle,
