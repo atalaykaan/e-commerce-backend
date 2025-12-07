@@ -1,6 +1,6 @@
 package com.atalaykaan.e_commerce_backend.domain.payment.controller;
 
-import com.atalaykaan.e_commerce_backend.domain.payment.dto.response.PaymentDTO;
+import com.atalaykaan.e_commerce_backend.domain.payment.model.dto.response.PaymentDTO;
 import com.atalaykaan.e_commerce_backend.domain.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

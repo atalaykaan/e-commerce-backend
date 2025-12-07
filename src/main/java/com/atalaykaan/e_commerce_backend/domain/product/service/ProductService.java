@@ -2,12 +2,12 @@ package com.atalaykaan.e_commerce_backend.domain.product.service;
 
 import com.atalaykaan.e_commerce_backend.common.exception.InvalidProductPriceException;
 import com.atalaykaan.e_commerce_backend.common.exception.InvalidProductQuantityException;
-import com.atalaykaan.e_commerce_backend.domain.product.dto.request.CreateProductRequest;
-import com.atalaykaan.e_commerce_backend.domain.product.dto.request.UpdateProductRequest;
-import com.atalaykaan.e_commerce_backend.domain.product.dto.response.ProductDTO;
+import com.atalaykaan.e_commerce_backend.domain.product.model.dto.request.CreateProductRequest;
+import com.atalaykaan.e_commerce_backend.domain.product.model.dto.request.UpdateProductRequest;
+import com.atalaykaan.e_commerce_backend.domain.product.model.dto.response.ProductDTO;
 import com.atalaykaan.e_commerce_backend.common.exception.ProductNotFoundException;
 import com.atalaykaan.e_commerce_backend.domain.product.mapper.ProductMapper;
-import com.atalaykaan.e_commerce_backend.domain.product.model.Product;
+import com.atalaykaan.e_commerce_backend.domain.product.model.entity.Product;
 import com.atalaykaan.e_commerce_backend.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;

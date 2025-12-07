@@ -1,7 +1,7 @@
 package com.atalaykaan.e_commerce_backend.domain.cart.service;
 
-import com.atalaykaan.e_commerce_backend.domain.order.model.Order;
-import com.atalaykaan.e_commerce_backend.domain.user.dto.response.UserDTO;
+import com.atalaykaan.e_commerce_backend.domain.order.model.entity.Order;
+import com.atalaykaan.e_commerce_backend.domain.user.model.dto.response.UserDTO;
 import com.atalaykaan.e_commerce_backend.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;

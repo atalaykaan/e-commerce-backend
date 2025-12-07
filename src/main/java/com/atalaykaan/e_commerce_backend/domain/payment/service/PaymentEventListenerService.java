@@ -1,7 +1,7 @@
 package com.atalaykaan.e_commerce_backend.domain.payment.service;
 
-import com.atalaykaan.e_commerce_backend.domain.order.model.Order;
-import com.atalaykaan.e_commerce_backend.domain.payment.dto.response.PaymentDTO;
+import com.atalaykaan.e_commerce_backend.domain.order.model.entity.Order;
+import com.atalaykaan.e_commerce_backend.domain.payment.model.dto.response.PaymentDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;

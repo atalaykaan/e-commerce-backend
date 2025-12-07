@@ -1,6 +1,6 @@
 package com.atalaykaan.e_commerce_backend.domain.order.repository;
 
-import com.atalaykaan.e_commerce_backend.domain.order.model.Order;
+import com.atalaykaan.e_commerce_backend.domain.order.model.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

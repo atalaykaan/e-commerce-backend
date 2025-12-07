@@ -1,7 +1,7 @@
 package com.atalaykaan.e_commerce_backend.domain.payment.mapper;
 
-import com.atalaykaan.e_commerce_backend.domain.payment.dto.response.PaymentDTO;
-import com.atalaykaan.e_commerce_backend.domain.payment.model.Payment;
+import com.atalaykaan.e_commerce_backend.domain.payment.model.dto.response.PaymentDTO;
+import com.atalaykaan.e_commerce_backend.domain.payment.model.entity.Payment;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

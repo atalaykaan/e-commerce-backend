@@ -1,6 +1,6 @@
 package com.atalaykaan.e_commerce_backend.domain.auth.principal;
 
-import com.atalaykaan.e_commerce_backend.domain.user.model.User;
+import com.atalaykaan.e_commerce_backend.domain.user.model.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

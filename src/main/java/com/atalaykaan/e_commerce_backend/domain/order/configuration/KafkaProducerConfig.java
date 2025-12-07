@@ -1,6 +1,5 @@
 package com.atalaykaan.e_commerce_backend.domain.order.configuration;
 
-import com.atalaykaan.e_commerce_backend.domain.order.model.Order;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;

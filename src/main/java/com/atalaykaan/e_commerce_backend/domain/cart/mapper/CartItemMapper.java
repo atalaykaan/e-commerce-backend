@@ -1,8 +1,8 @@
 package com.atalaykaan.e_commerce_backend.domain.cart.mapper;
 
-import com.atalaykaan.e_commerce_backend.domain.cart.dto.response.CartItemDTO;
-import com.atalaykaan.e_commerce_backend.domain.product.dto.response.ProductDTO;
-import com.atalaykaan.e_commerce_backend.domain.cart.model.CartItem;
+import com.atalaykaan.e_commerce_backend.domain.cart.model.dto.response.CartItemDTO;
+import com.atalaykaan.e_commerce_backend.domain.product.model.dto.response.ProductDTO;
+import com.atalaykaan.e_commerce_backend.domain.cart.model.entity.CartItem;
 import com.atalaykaan.e_commerce_backend.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

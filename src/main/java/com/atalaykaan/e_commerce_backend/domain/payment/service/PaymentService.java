@@ -2,12 +2,12 @@ package com.atalaykaan.e_commerce_backend.domain.payment.service;
 
 import com.atalaykaan.e_commerce_backend.common.exception.PaymentFailedException;
 import com.atalaykaan.e_commerce_backend.common.exception.PaymentNotFoundException;
-import com.atalaykaan.e_commerce_backend.domain.payment.dto.response.PaymentDTO;
+import com.atalaykaan.e_commerce_backend.domain.payment.model.dto.response.PaymentDTO;
 import com.atalaykaan.e_commerce_backend.domain.payment.enums.PaymentStatus;
 import com.atalaykaan.e_commerce_backend.domain.payment.mapper.PaymentMapper;
-import com.atalaykaan.e_commerce_backend.domain.payment.model.Payment;
+import com.atalaykaan.e_commerce_backend.domain.payment.model.entity.Payment;
 import com.atalaykaan.e_commerce_backend.domain.payment.repository.PaymentRepository;
-import com.atalaykaan.e_commerce_backend.domain.user.dto.response.UserDTO;
+import com.atalaykaan.e_commerce_backend.domain.user.model.dto.response.UserDTO;
 import com.atalaykaan.e_commerce_backend.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package com.atalaykaan.e_commerce_backend.domain.order.kafka;
 
-import com.atalaykaan.e_commerce_backend.domain.order.model.Order;
+import com.atalaykaan.e_commerce_backend.domain.order.model.entity.Order;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

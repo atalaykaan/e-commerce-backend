@@ -1,6 +1,6 @@
 package com.atalaykaan.e_commerce_backend.domain.payment.repository;
 
-import com.atalaykaan.e_commerce_backend.domain.payment.model.Payment;
+import com.atalaykaan.e_commerce_backend.domain.payment.model.entity.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

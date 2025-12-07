@@ -1,6 +1,6 @@
 package com.atalaykaan.e_commerce_backend.domain.product.configuration;
 
-import com.atalaykaan.e_commerce_backend.domain.product.dto.response.ProductDTO;
+import com.atalaykaan.e_commerce_backend.domain.product.model.dto.response.ProductDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;

@@ -1,7 +1,7 @@
 package com.atalaykaan.e_commerce_backend.domain.auth.configuation;
 
 import com.atalaykaan.e_commerce_backend.common.exception.UserNotFoundException;
-import com.atalaykaan.e_commerce_backend.domain.user.model.User;
+import com.atalaykaan.e_commerce_backend.domain.user.model.entity.User;
 import com.atalaykaan.e_commerce_backend.domain.auth.principal.UserPrincipal;
 import com.atalaykaan.e_commerce_backend.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

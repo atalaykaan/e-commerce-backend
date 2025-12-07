@@ -1,13 +1,13 @@
 package com.atalaykaan.e_commerce_backend.domain.user.service;
 
-import com.atalaykaan.e_commerce_backend.domain.auth.dto.request.AuthRequest;
-import com.atalaykaan.e_commerce_backend.domain.user.dto.request.CreateUserRequest;
-import com.atalaykaan.e_commerce_backend.domain.user.dto.request.UpdateUserRequest;
-import com.atalaykaan.e_commerce_backend.domain.user.dto.response.UserDTO;
+import com.atalaykaan.e_commerce_backend.domain.auth.model.dto.request.AuthRequest;
+import com.atalaykaan.e_commerce_backend.domain.user.model.dto.request.CreateUserRequest;
+import com.atalaykaan.e_commerce_backend.domain.user.model.dto.request.UpdateUserRequest;
+import com.atalaykaan.e_commerce_backend.domain.user.model.dto.response.UserDTO;
 import com.atalaykaan.e_commerce_backend.common.exception.UserNotFoundException;
 import com.atalaykaan.e_commerce_backend.common.exception.UserWithEmailAlreadyExistsException;
 import com.atalaykaan.e_commerce_backend.domain.user.mapper.UserMapper;
-import com.atalaykaan.e_commerce_backend.domain.user.model.User;
+import com.atalaykaan.e_commerce_backend.domain.user.model.entity.User;
 import com.atalaykaan.e_commerce_backend.domain.user.repository.UserRepository;
 import com.atalaykaan.e_commerce_backend.domain.auth.service.JwtService;
 import lombok.RequiredArgsConstructor;

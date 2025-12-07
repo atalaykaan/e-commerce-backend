@@ -1,6 +1,6 @@
 package com.atalaykaan.e_commerce_backend.domain.log.service;
 
-import com.atalaykaan.e_commerce_backend.domain.order.model.Order;
+import com.atalaykaan.e_commerce_backend.domain.order.model.entity.Order;
 import com.atalaykaan.e_commerce_backend.log.model.LogModel;
 import com.atalaykaan.e_commerce_backend.log.repository.LogModelRepository;
 import lombok.RequiredArgsConstructor;
