@@ -75,6 +75,8 @@ public class CartItemService {
         }
 
         cartItem.setQuantity(quantity);
+
+        cartItem.setUpdatedAt(LocalDateTime.now());
     }
 
     @Transactional

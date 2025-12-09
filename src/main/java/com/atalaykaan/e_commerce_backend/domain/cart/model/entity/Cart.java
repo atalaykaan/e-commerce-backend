@@ -1,5 +1,6 @@
 package com.atalaykaan.e_commerce_backend.domain.cart.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,6 +27,7 @@ public class Cart {
     private UUID userId;
 
     @OneToMany(mappedBy = "cart", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<CartItem> cartItems;
 
     private BigDecimal totalPrice;

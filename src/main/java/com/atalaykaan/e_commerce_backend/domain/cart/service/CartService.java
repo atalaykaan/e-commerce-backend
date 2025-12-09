@@ -169,35 +169,23 @@ public class CartService {
 
         CartItem cartItem = validateUser(email, updateCartItemRequest.getCartItemId());
 
-        Cart cart = cartItem.getCart();
+        ProductDTO productDTO = productService.findProductById(cartItem.getProductId());
+
+        if(productDTO.getStock() < updateCartItemRequest.getQuantity()) {
+
+            throw new InvalidItemQuantityException("Item quantity cannot exceed the product stock");
+        }
 
         cartItemService.updateCartItemQuantity(cartItem, updateCartItemRequest.getQuantity());
+
+        Cart cart = cartItem.getCart();
 
         if(cartItem.getQuantity() == 0) {
 
             cart.getCartItems().remove(cartItem);
         }
 
-        if(cart.getCartItems().isEmpty()) {
-
-            cartRepository.deleteById(cart.getId());
-
-            return null;
-        }
-        else {
-
-            LocalDateTime dateNow = LocalDateTime.now();
-
-            cartItem.setUpdatedAt(dateNow);
-
-            cart.setUpdatedAt(dateNow);
-
-            Cart savedCart = cartRepository.save(cart);
-
-            CartDTO cartDTO = cartMapper.toDto(savedCart);
-
-            return cartDTO;
-        }
+        return deleteCartIfEmptyElseUpdate(cart);
     }
 
     @Transactional
@@ -209,6 +197,10 @@ public class CartService {
 
         cart.getCartItems().remove(cartItem);
 
+        return deleteCartIfEmptyElseUpdate(cart);
+    }
+
+    private CartDTO deleteCartIfEmptyElseUpdate(Cart cart) {
         if(cart.getCartItems().isEmpty()) {
 
             cartRepository.deleteById(cart.getId());
