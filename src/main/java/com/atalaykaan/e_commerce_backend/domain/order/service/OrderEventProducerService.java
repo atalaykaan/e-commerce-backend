@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.domain.order.kafka;
+package com.atalaykaan.e_commerce_backend.domain.order.service;
 
 import com.atalaykaan.e_commerce_backend.domain.order.model.entity.Order;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class KafkaProducerService {
+public class OrderEventProducerService {
 
     @Value("${spring.kafka.topic.order-created}")
     private String orderCreatedTopic;

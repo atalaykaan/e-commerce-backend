@@ -12,7 +12,6 @@ import com.atalaykaan.e_commerce_backend.domain.order.model.entity.Order;
 import com.atalaykaan.e_commerce_backend.domain.order.model.entity.OrderItem;
 import com.atalaykaan.e_commerce_backend.domain.order.enums.OrderStatus;
 import com.atalaykaan.e_commerce_backend.domain.order.repository.OrderRepository;
-import com.atalaykaan.e_commerce_backend.domain.order.kafka.KafkaProducerService;
 import com.atalaykaan.e_commerce_backend.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class OrderService {
 
     private final OrderItemService orderItemService;
 
-    private final KafkaProducerService kafkaProducerService;
+    private final OrderEventProducerService orderEventProducerService;
 
     private final UserService userService;
 
@@ -65,7 +64,7 @@ public class OrderService {
 
         Order createdOrder = orderRepository.save(order);
 
-        kafkaProducerService.sendOrderCreatedMessage(createdOrder);
+        orderEventProducerService.sendOrderCreatedMessage(createdOrder);
 
         OrderDTO orderDTO = orderMapper.toDto(createdOrder);
 
@@ -110,7 +109,7 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        kafkaProducerService.sendOrderUpdatedMessage(savedOrder);
+        orderEventProducerService.sendOrderUpdatedMessage(savedOrder);
 
         OrderDTO orderDTO = orderMapper.toDto(savedOrder);
 

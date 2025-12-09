@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.domain.order.configuration;
+package com.atalaykaan.e_commerce_backend.common.configuration;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Value;

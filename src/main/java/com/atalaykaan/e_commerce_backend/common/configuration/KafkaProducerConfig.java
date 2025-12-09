@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.domain.order.configuration;
+package com.atalaykaan.e_commerce_backend.common.configuration;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

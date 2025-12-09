@@ -1,4 +1,4 @@
-package com.atalaykaan.e_commerce_backend.domain.log.configuration;
+package com.atalaykaan.e_commerce_backend.common.configuration;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -29,7 +29,9 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.atalaykaan.e_commerce_backend.domain.order.model");
+        props.put(JsonDeserializer.TRUSTED_PACKAGES,
+                "com.atalaykaan.e_commerce_backend.domain.order.model.entity," +
+                "com.atalaykaan.e_commerce_backend.domain.cart.model.entity");
 
         return new DefaultKafkaConsumerFactory<>(props);
     }
