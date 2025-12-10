@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -224,10 +225,8 @@ public class CartService {
 
         UserDTO userDTO = userService.findUserByEmail(email);
 
-        Cart cart = cartRepository.findByUserId(userDTO.getId())
-                .orElseThrow(() -> new CartNotFoundException("Cart not found for user with email: " + email));
-
-        cartRepository.deleteById(cart.getId());
+        cartRepository.findByUserId(userDTO.getId())
+                .ifPresent(cartRepository::delete);
     }
 
     @Transactional
@@ -244,11 +243,9 @@ public class CartService {
 
         List<Cart> cartList = cartRepository.findAll();
 
-        if(cartList.isEmpty()) {
+        if(!cartList.isEmpty()) {
 
-            throw new CartNotFoundException("No carts were found");
+            cartRepository.deleteAll();
         }
-
-        cartRepository.deleteAll();
     }
 }

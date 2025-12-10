@@ -1,6 +1,7 @@
 package com.atalaykaan.e_commerce_backend.domain.user.service;
 
 import com.atalaykaan.e_commerce_backend.domain.auth.model.dto.request.AuthRequest;
+import com.atalaykaan.e_commerce_backend.domain.cart.service.CartService;
 import com.atalaykaan.e_commerce_backend.domain.user.model.dto.request.CreateUserRequest;
 import com.atalaykaan.e_commerce_backend.domain.user.model.dto.request.UpdateUserRequest;
 import com.atalaykaan.e_commerce_backend.domain.user.model.dto.response.UserDTO;
@@ -37,6 +38,8 @@ public class UserService{
     private final AuthenticationManager authenticationManager;
 
     private final JwtService jwtService;
+
+    private final CartService cartService;
 
     @Transactional
     public UserDTO saveUser(CreateUserRequest createUserRequest) {
@@ -161,8 +164,10 @@ public class UserService{
     @Transactional
     public void deleteUserById(UUID id) {
 
-        userRepository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+
+        cartService.deleteCartByEmail(user.getEmail());
 
         userRepository.deleteById(id);
     }
@@ -170,7 +175,11 @@ public class UserService{
     @Transactional
     public void deleteAllUsers() {
 
-        if(userRepository.findAll().isEmpty()) {
+        cartService.deleteAllCarts();
+
+        List<User> userList = userRepository.findAll();
+
+        if(userList.isEmpty()) {
 
             throw new UserNotFoundException("No users were found");
         }
