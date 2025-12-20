@@ -208,9 +208,9 @@ public class ProductService{
         }
     }
 
-    public List<ProductDTO> getAllDataFromIndex(String searchText) {
+    public List<ProductDTO> getAllDataFromIndex(String searchIndex) {
 
-        List<ProductDTO> productDocumentList = productSearchService.getAllDataFromIndex(searchText)
+        List<ProductDTO> productDocumentList = productSearchService.getAllDataFromIndex(searchIndex)
                 .stream()
                 .map(productMapper::documentToDTO)
                 .toList();
@@ -223,6 +223,7 @@ public class ProductService{
         return productDocumentList;
     }
 
+    @Cacheable(value = PRODUCT_LIST_CACHE, key = "#productName.trim().toLowerCase()", unless = "#result.isEmpty()")
     public List<ProductDTO> searchProductsByName(String productName) {
 
         List<ProductDTO> productDocumentList = productSearchService.searchDocumentsByName(productName)
