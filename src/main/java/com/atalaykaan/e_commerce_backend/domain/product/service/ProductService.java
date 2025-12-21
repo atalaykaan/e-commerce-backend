@@ -41,7 +41,10 @@ public class ProductService{
     @Transactional
     @Caching(
             put = @CachePut(value = PRODUCT_CACHE, key = "#result.getId()"),
-            evict = @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
+            evict = {
+                    @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'"),
+                    @CacheEvict(value = PRODUCT_LIST_CACHE, key = "#createProductRequest.getName().trim().toLowerCase()")
+            }
     )
     public ProductDTO saveProduct(CreateProductRequest createProductRequest) {
 
@@ -98,7 +101,11 @@ public class ProductService{
     @Transactional
     @Caching(
             put = @CachePut(value = PRODUCT_CACHE, key = "#id"),
-            evict = @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
+            evict = {
+                    @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'"),
+                    @CacheEvict(value = PRODUCT_LIST_CACHE, key = "#updateProductRequest.getName().trim().toLowerCase()"),
+                    @CacheEvict(value = PRODUCT_LIST_CACHE, key = "#result.getName().trim().toLowerCase()")
+            }
     )
     public ProductDTO updateProductById(Long id, UpdateProductRequest updateProductRequest) {
 
@@ -140,7 +147,10 @@ public class ProductService{
     @Transactional
     @Caching(
             put = @CachePut(value = PRODUCT_CACHE, key = "#id"),
-            evict = @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
+            evict = {
+                    @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'"),
+                    @CacheEvict(value = PRODUCT_LIST_CACHE, key = "#result.getName().trim().toLowerCase()")
+            }
     )
     ProductDTO decreaseProductStock(Long id, Long quantity) {
 
@@ -169,7 +179,7 @@ public class ProductService{
     @Caching(
             evict = {
                     @CacheEvict(value = PRODUCT_CACHE, key = "#id"),
-                    @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'")
+                    @CacheEvict(value = PRODUCT_LIST_CACHE, key = "'allProducts'"),
             }
     )
     public void deleteProductById(Long id) {
